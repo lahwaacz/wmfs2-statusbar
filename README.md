@@ -37,4 +37,4 @@ Runtime configuration is not currently supported, you need to make changes in so
 Preview
 -------
 
-    ![Screenshot preview](statusbar-preview.png)
+![Screenshot preview](https://raw.github.com/lahwaacz/wmfs2-statusbar/master/statusbar-preview.png)
