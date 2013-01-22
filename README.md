@@ -16,7 +16,7 @@ Build dependencies
 Runtime dependencies
 --------------------
 
- -  wmfs2 (possibly works with other Window Managers, not tested)
+ -  wmfs2
  -  mpd - MPD plugin
  -  pulseaudio - PulseAudio plugin
 
