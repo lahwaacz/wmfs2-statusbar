@@ -2,6 +2,7 @@
 #include <signal.h> /* signal handler */
 #include <cstdlib>  /* for exit() */
 
+#include <iostream>
 #include <string>
 #include <vector>
 
@@ -56,6 +57,21 @@ int main(int argc, char **argv) {
     // at the start update every plugin
     for (int i = 0; i < plugins.size(); i++) {
         plugins[i]->update();
+
+        // check if timeout and timeoutOffset are sane
+        int timeout = plugins[i]->getTimeout();
+        int offset = plugins[i]->getTimeoutOffset();
+        if (timeout < 1) {
+            std::cout << plugins[i]->getName() << ": timeout is too low, setting to 1sec" << std::endl;
+            plugins[i]->setTimeout(1);
+        }
+        if (offset < 0) {
+            std::cout << plugins[i]->getName() << ": timeoutOffset is too low, setting to 0sec" << std::endl;
+            plugins[i]->setTimeoutOffset(0);
+        } else if (offset >= timeout) {
+            std::cout << plugins[i]->getName() << ": timeoutOffset is too high, setting to (timeout-1)sec" << std::endl;
+            plugins[i]->setTimeoutOffset(timeout-1);
+        }
     }
 
     int counter = 0;

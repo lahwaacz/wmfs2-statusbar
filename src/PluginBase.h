@@ -53,7 +53,9 @@ class Plugin {
     public:
         const char* getName(void) {return name;};
         unsigned int getTimeout(void) {return timeout;};
-        unsigned int getTimeoutOffset(void) {return timeoutOffset;}
+        void setTimeout(unsigned int timeout) {this->timeout = timeout;};
+        unsigned int getTimeoutOffset(void) {return timeoutOffset;};
+        void setTimeoutOffset(unsigned int offset) {this->timeoutOffset = offset;};
         char* getStatusLine(void) {return statusLine;};
 
         // main method - redefine in subclasses
