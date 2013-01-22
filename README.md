@@ -1,6 +1,11 @@
 Simple lightweight statusbar for WMFS2
 ======================================
 
+Preview
+-------
+
+![Screenshot preview](https://raw.github.com/lahwaacz/wmfs2-statusbar/master/statusbar-preview.png)
+
 Build dependencies
 ------------------
 
@@ -33,8 +38,3 @@ Configuration
 -------------
 
 Runtime configuration is not currently supported, you need to make changes in source code and recompile.
-
-Preview
--------
-
-![Screenshot preview](https://raw.github.com/lahwaacz/wmfs2-statusbar/master/statusbar-preview.png)
