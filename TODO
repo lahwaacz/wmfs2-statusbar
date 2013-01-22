@@ -1,0 +1,4 @@
+ *  configuration file
+ *  logging into stdout/stderr
+ *  exception handling in plugins
+ *  MPD - detect daemon reset
