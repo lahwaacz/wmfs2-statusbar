@@ -32,7 +32,7 @@ Compilation
     cd ./wmfs2-statusbar
     cmake -DCMAKE_BUILD_TYPE=Release .
     make
-    ./bin/status
+    ./bin/wmfs2-statusbar
 
 Configuration
 -------------
