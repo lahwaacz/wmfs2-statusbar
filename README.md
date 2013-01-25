@@ -30,9 +30,9 @@ Compilation
 
     git clone git://github.com/lahwaacz/wmfs2-statusbar.git
     cd ./wmfs2-statusbar
-    cmake -DCMAKE_BUILD_TYPE=Release .
+    cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=/usr/local ./
     make
-    ./bin/wmfs2-statusbar
+    make install
 
 Configuration
 -------------

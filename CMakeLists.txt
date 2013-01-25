@@ -51,3 +51,10 @@ if(CMAKE_BUILD_TYPE STREQUAL "Debug")
         add_definitions("-D WITH_BOOST")
     endif()
 endif()
+
+message(STATUS "Install prefix: " ${CMAKE_INSTALL_PREFIX})
+INSTALL(TARGETS wmfs2-statusbar
+    RUNTIME DESTINATION bin
+    LIBRARY DESTINATION lib
+    ARCHIVE DESTINATION lib
+)
