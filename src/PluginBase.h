@@ -1,5 +1,6 @@
 #pragma once
 
+#include <cstring>  /* for strcmp() */
 #include <cstdio>   /* for *printf() */
 #include <cstdlib>  /* for free() */
 #include <unistd.h> /* for close() */

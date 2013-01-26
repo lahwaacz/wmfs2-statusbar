@@ -17,7 +17,7 @@ void PluginBattery::update(void) {
   
     int percent = full == 0 ? -1 : 100 * now / full;
 
-    if (state == "Discharging" and percent >= 0 and percent <= batteryCriticalPercent) {
+    if (std::strncmp(state, "Discharging", 2) == 0 and percent >= 0 and percent <= batteryCriticalPercent) {
         std::system("twmnc --aot -t 'Battery level critical' -c 'action in 5 seconds...'");
         sleep(5);
         std::system(batteryCriticalAction);

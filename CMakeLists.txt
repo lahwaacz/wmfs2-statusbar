@@ -40,7 +40,7 @@ target_link_libraries(wmfs2-statusbar ${X11_LIBRARIES})
 target_link_libraries(wmfs2-statusbar ${MPD_LIBRARIES})
 target_link_libraries(wmfs2-statusbar ${PULSE_LIBRARIES})
 
-set(CMAKE_CXX_FLAGS "-std=c++11 -lstdc++")
+set(CMAKE_CXX_FLAGS "-std=c++11 -lstdc++ -Wall")
 set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -D DEBUG")
 
 if(CMAKE_BUILD_TYPE STREQUAL "Debug")
