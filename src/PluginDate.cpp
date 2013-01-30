@@ -2,6 +2,7 @@
 
 PluginDate::PluginDate(void) {
     name = "PluginDate";
+    format = config.get("date_format").c_str();
 }
 
 void PluginDate::update(void) {
@@ -12,6 +13,6 @@ void PluginDate::update(void) {
     tm = localtime(&t);
     strftime(date, 128, "%a, %d %b %Y %T", tm);
   
-    asprintf(&statusLine, formatDate, date);
+    asprintf(&statusLine, format, date);
 }
 

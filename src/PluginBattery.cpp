@@ -4,24 +4,33 @@ PluginBattery::PluginBattery(void) {
     name = "PluginBattery";
     timeout = 30;
     timeoutOffset = 3;
+
+    format = config.get("battery_format").c_str();
+    pathFull = config.get("battery_path_full").c_str();
+    pathNow = config.get("battery_path_now").c_str();
+    pathState = config.get("battery_path_state").c_str();
+    istringstream(config.get("battery_critical_percent")) >> criticalPercent;
+    criticalAction = config.get("battery_critical_action").c_str();
 }
 
 void PluginBattery::update(void) {
     if (statusLine != NULL)
         free(statusLine);
 
-    readFileInt(&full, batteryFullPath);
-    readFileInt(&now, batteryNowPath);
+    readFileInt(&full, pathFull);
+    readFileInt(&now, pathNow);
     char state[16];
-    readFileStr(state, 16, batteryStatePath);
+    readFileStr(state, 16, pathState);
   
     int percent = full == 0 ? -1 : 100 * now / full;
 
-    if (std::strncmp(state, "Discharging", 2) == 0 and percent >= 0 and percent <= batteryCriticalPercent) {
-        std::system("twmnc --aot -t 'Battery level critical' -c 'action in 5 seconds...'");
-        sleep(5);
-        std::system(batteryCriticalAction);
+    if (std::strncmp(state, "Discharging", 2) == 0 and percent >= 0 and percent <= criticalPercent) {
+        std::system(config.get("battery_critical_action1").c_str());
+        int timeout;
+        istringstream(config.get("battery_critical_timeout")) >> timeout;
+        sleep(timeout);
+        std::system(config.get("battery_critical_action2").c_str());
     }
 
-    asprintf(&statusLine, formatBattery, state, percent);
+    asprintf(&statusLine, format, state, percent);
 }

@@ -4,6 +4,16 @@ PluginNetwork::PluginNetwork(void) {
     name = "PluginNetwork";
     downOld = 0;
     upOld = 0;
+
+    formatDown = config.get("network_format_down").c_str();
+    formatUp = config.get("network_format_up").c_str();
+    asprintf(&pathUp, "/sys/class/net/%s/statistics/tx_bytes", config.get("network_interface").c_str());
+    asprintf(&pathDown, "/sys/class/net/%s/statistics/rx_bytes", config.get("network_interface").c_str());
+}
+
+PluginNetwork::~PluginNetwork(void) {
+    free(pathUp);
+    free(pathDown);
 }
 
 void PluginNetwork::update(void) {
@@ -19,7 +29,7 @@ void PluginNetwork::update(void) {
 
 char* PluginNetwork::getDown(void) {
     unsigned long down = 0;
-    readFileInt(&down, eth0downPath);
+    readFileInt(&down, pathDown);
     down /= 1024;
     unsigned long speed = 0;
 
@@ -34,7 +44,7 @@ char* PluginNetwork::getDown(void) {
 
 char* PluginNetwork::getUp(void) {
     unsigned long up = 0;
-    readFileInt(&up, eth0upPath);
+    readFileInt(&up, pathUp);
     up /= 1024;
     unsigned long speed = 0;
 

@@ -6,6 +6,7 @@ PluginIP::PluginIP(void) {
     name = "PluginIP";
     timeout = 30;
     timeoutOffset = 2;
+    format = config.get("ip_format").c_str();
 
     sockfd = socket(AF_INET, SOCK_DGRAM, 0);
     if (sockfd == -1)
@@ -33,7 +34,7 @@ void PluginIP::update(void) {
             throw 1;
 //            log("Get IP address ioctl failed");
         } else {
-            asprintf(&statusLine, formatIP, inet_ntoa(((struct sockaddr_in *)&ifr.ifr_addr)->sin_addr));
+            asprintf(&statusLine, format, inet_ntoa(((struct sockaddr_in *)&ifr.ifr_addr)->sin_addr));
         }
     }
 }

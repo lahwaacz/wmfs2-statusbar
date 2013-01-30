@@ -6,6 +6,7 @@ PluginEssid::PluginEssid(void) {
     name = "PluginEssid";
     timeout = 30;
     timeoutOffset = 1;
+    format = config.get("essid_format").c_str();
 
     sockfd = socket(AF_INET, SOCK_DGRAM, 0);
     if (sockfd == -1)
@@ -34,7 +35,7 @@ void PluginEssid::update(void) {
             throw 1;
 //            log("Get ESSID ioctl failed");
         } else {
-            asprintf(&statusLine, formatEssid, buffer);
+            asprintf(&statusLine, format, buffer);
         }
     }
 }

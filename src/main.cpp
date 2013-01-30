@@ -7,6 +7,7 @@
 #include <vector>
 
 #include "Xstatus.h"
+#include "ConfigParser.h"
 
 // plugins
 #include "PluginBattery.h"
@@ -26,21 +27,11 @@
 #define LEFT_SEP "^s[left;#898989; - ]"
 #define RIGHT_SEP "^s[right;#898989; - ]"
 
-static Xstatus* xstatus;    // must be global so that signal handler can access it
-
-void signalHandler(int signum) {
-    if (signum == SIGTERM or signum == SIGINT) {
-        delete xstatus;
-        exit(signum);
-    }
-}
+Config config = Config();       // global to share between plugins
 
 int main(int argc, char **argv) {
-    std::string statusLine;
-    xstatus = new Xstatus();
-
-    signal(SIGTERM, signalHandler);
-    signal(SIGINT, signalHandler);
+    Xstatus xstatus = Xstatus();
+//    config.parseConfigFile("pokus.conf");
 
     Plugin* bat = new PluginBattery();
     Plugin* cpu = new PluginCPU();
@@ -74,6 +65,7 @@ int main(int argc, char **argv) {
         }
     }
 
+    std::string statusLine;
     int counter = 0;
     for (;;) {
         sleep(1);
@@ -108,13 +100,11 @@ int main(int argc, char **argv) {
                 statusLine += plugins[i]->getStatusLine();
             }
         }
-        xstatus->sendStatus(statusLine);
+        xstatus.sendStatus(statusLine);
         counter++;
 
         #ifdef DEBUG
         std::cout << "Total:\t\t\t";
         #endif // DEBUG
     }
-    
-    delete xstatus;
 }
