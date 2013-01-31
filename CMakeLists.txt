@@ -17,6 +17,7 @@ project(wmfs2-statusbar)
 
 set(wmfs2-statusbar_SOURCES
     src/main.cpp
+    src/ConfigParser.cpp
     src/Xstatus.cpp
     src/PluginDate.cpp
     src/PluginMPD.cpp
