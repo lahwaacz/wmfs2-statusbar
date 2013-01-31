@@ -47,7 +47,11 @@ int main(int argc, char **argv) {
 
     // at the start update every plugin
     for (int i = 0; i < plugins.size(); i++) {
-        plugins[i]->update();
+        try {
+            plugins[i]->update();
+        } catch (...) {
+            std::cerr << "Failed to update plugin '" << plugins[i]->getName() << "'." << std::endl;
+        }
 
         // check if timeout and timeoutOffset are sane
         int timeout = plugins[i]->getTimeout();
@@ -90,14 +94,17 @@ int main(int argc, char **argv) {
 
                 try {
                     plugins[i]->update();
-                    statusLine += plugins[i]->getStatusLine();
                 } catch (...) {
-                    statusLine += "^s[left;#ff0000;Plugin '";
-                    statusLine += plugins[i]->getName();
-                    statusLine += "' failed.]";
+                    std::cerr << "Failed to update plugin '" << plugins[i]->getName() << "'." << std::endl;
                 }
+            }
+            char* pluginStatus = plugins[i]->getStatusLine();
+            if (pluginStatus == NULL) {
+                statusLine += "^s[left;#ff0000;Plugin '";
+                statusLine += plugins[i]->getName();
+                statusLine += "' failed.]";
             } else {
-                statusLine += plugins[i]->getStatusLine();
+                statusLine += pluginStatus;
             }
         }
         xstatus.sendStatus(statusLine);
