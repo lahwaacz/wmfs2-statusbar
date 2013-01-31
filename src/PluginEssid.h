@@ -10,6 +10,8 @@ class PluginEssid : public Plugin {
     private:
         int sockfd;
         struct iwreq wreq = {};
+        const char* wirelessName;
+        const char* wiredName;
 
     public:
         PluginEssid(void);

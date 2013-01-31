@@ -7,8 +7,8 @@ PluginNetwork::PluginNetwork(void) {
 
     formatDown = config.get("network_format_down").c_str();
     formatUp = config.get("network_format_up").c_str();
-    asprintf(&pathUp, "/sys/class/net/%s/statistics/tx_bytes", config.get("network_interface").c_str());
-    asprintf(&pathDown, "/sys/class/net/%s/statistics/rx_bytes", config.get("network_interface").c_str());
+    asprintf(&pathUp, "/sys/class/net/%s/statistics/tx_bytes", config.get("network_wireless_interface").c_str());
+    asprintf(&pathDown, "/sys/class/net/%s/statistics/rx_bytes", config.get("network_wireless_interface").c_str());
 }
 
 PluginNetwork::~PluginNetwork(void) {

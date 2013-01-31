@@ -25,7 +25,7 @@ void PluginIP::update(void) {
         throw 1;
     else {
         ifr = {};
-        strncpy(ifr.ifr_name, "eth0", IFNAMSIZ-1);
+        strncpy(ifr.ifr_name, config.get("network_active_interface").c_str(), IFNAMSIZ-1);
 
         /* I want to get an IPv4 IP address */
         ifr.ifr_addr.sa_family = AF_INET;

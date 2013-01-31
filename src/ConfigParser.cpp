@@ -27,9 +27,11 @@ void Config::setDefaults(void) {
     dict["date_format"]                 = "^s[right;#dddddd;%s]";
     dict["essid_format"]                = "^s[left;#aabbaa;ESSID]^s[left;#dddddd; %s]";
     dict["ip_format"]                   = "^s[left;#aabbaa;IP]^s[left;#dddddd; %s]";
-    dict["network_format_down"]         = "^s[left;#aabbaa;Down ]^g[left;100;14;%d;5000;#888888;#00af00;down]";
-    dict["network_format_up"]           = "^s[left;#aabbaa;Up ]^g[left;100;14;%d;2500;#888888;#af0000;up]";
-    dict["network_interface"]           = "eth0";
+    dict["network_format_down"]         = "^s[left;#aabbaa;Down ]^g[left;100;14;%d;300;#888888;#00af00;down]";
+    dict["network_format_up"]           = "^s[left;#aabbaa;Up ]^g[left;100;14;%d;300;#888888;#af0000;up]";
+    dict["network_wired_interface"]     = "eth0";
+    dict["network_wireless_interface"]  = "wlan0";
+    dict["network_active_interface"]    = "";
     dict["ram_format"]                  = "^s[left;#aabbaa;RAM ]^p[left;100;8;0;%ld;%ld;#888888;#771144]";
     dict["volume_format"]               = "^s[left;#aabbaa;Vol ]^s[left;#dddddd;%d%%]";
 }

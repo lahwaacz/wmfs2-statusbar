@@ -7,6 +7,8 @@ PluginEssid::PluginEssid(void) {
     timeout = 30;
     timeoutOffset = 1;
     format = config.get("essid_format").c_str();
+    wirelessName = config.get("network_wireless_interface").c_str();
+    wiredName = config.get("network_wired_interface").c_str();
 
     sockfd = socket(AF_INET, SOCK_DGRAM, 0);
     if (sockfd == -1)
@@ -25,7 +27,7 @@ void PluginEssid::update(void) {
         throw 1;
     else {
         wreq = {};
-        strncpy(wreq.ifr_name, "wlan0", IFNAMSIZ-1);
+        strncpy(wreq.ifr_name, wirelessName, IFNAMSIZ-1);
         
         char buffer[IW_ESSID_MAX_SIZE] = {0};
         wreq.u.essid.pointer = buffer;
@@ -37,5 +39,11 @@ void PluginEssid::update(void) {
         } else {
             asprintf(&statusLine, format, buffer);
         }
+
+        // check if connected, set active network interface
+        if (std::strncmp(buffer, "", 1) == 0)
+            config.set("network_active_interface", wiredName);
+        else
+            config.set("network_active_interface", wirelessName);
     }
 }
