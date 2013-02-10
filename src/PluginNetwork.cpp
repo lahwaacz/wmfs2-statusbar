@@ -39,6 +39,7 @@ void PluginNetwork::setActiveInterface(void) {
     }
 
     config.set("network_active_interface", "lo");
+    active = NULL;
 }
 
 void PluginNetwork::update(void) {
@@ -49,8 +50,12 @@ void PluginNetwork::update(void) {
 
     this->setActiveInterface();
 
-    unsigned long down = getDown();
-    unsigned long up = getUp();
+    unsigned long down = 0;
+    unsigned long up = 0;
+    if (active) {
+        down = getDown();
+        up = getUp();
+    }
     asprintf(&statusLine, format, down, up);
 }
 
