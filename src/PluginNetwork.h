@@ -23,8 +23,6 @@ class PluginNetwork : public Plugin {
     private:
         unsigned long downOld;
         unsigned long upOld;
-        const char* formatDown;
-        const char* formatUp;
         NetworkInterface wireless;
         NetworkInterface wired;
         NetworkInterface* active = NULL;
@@ -33,7 +31,7 @@ class PluginNetwork : public Plugin {
         PluginNetwork(void);
         void setActiveInterface(void);
         void update(void);
-        char* getDown(void);
-        char* getUp(void);
+        unsigned long getDown(void);
+        unsigned long getUp(void);
 };
 

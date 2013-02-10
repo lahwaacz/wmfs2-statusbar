@@ -6,8 +6,7 @@ PluginNetwork::PluginNetwork(void) {
     upOld = 0;
 
     // format for up and down graphs
-    formatDown = config.get("network_format_down").c_str();
-    formatUp = config.get("network_format_up").c_str();
+    format = config.get("network_format").c_str();
 
     // init wireless interface paths
     wireless.name = config.get("network_wireless_interface").c_str();
@@ -50,14 +49,12 @@ void PluginNetwork::update(void) {
 
     this->setActiveInterface();
 
-    char* down = getDown();
-    char* up = getUp();
-    asprintf(&statusLine, "%s ^s[left;#898989; - ] %s", down, up);
-    free(down);
-    free(up);
+    unsigned long down = getDown();
+    unsigned long up = getUp();
+    asprintf(&statusLine, format, down, up);
 }
 
-char* PluginNetwork::getDown(void) {
+unsigned long PluginNetwork::getDown(void) {
     unsigned long down = 0;
     readFileInt(&down, active->pathDown);
     down /= 1024;
@@ -65,14 +62,11 @@ char* PluginNetwork::getDown(void) {
 
     if (downOld != 0) speed = down - downOld;
     downOld = down;
-  
-    char* ret;
-    asprintf(&ret, formatDown, speed);
-  
-    return ret;
+
+    return speed;
 }
 
-char* PluginNetwork::getUp(void) {
+unsigned long PluginNetwork::getUp(void) {
     unsigned long up = 0;
     readFileInt(&up, active->pathUp);
     up /= 1024;
@@ -81,9 +75,6 @@ char* PluginNetwork::getUp(void) {
     if (upOld != 0) speed = up - upOld;
     upOld = up;
   
-    char* ret;
-    asprintf(&ret, formatUp, speed);
-  
-    return ret;
+    return speed;
 }
 
