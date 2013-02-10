@@ -4,6 +4,7 @@
 
 struct NetworkInterface {
     const char* name;
+    const char* format;
     char* pathDown = NULL;
     char* pathUp = NULL;
     char* pathCarrier = NULL;

@@ -5,17 +5,16 @@ PluginNetwork::PluginNetwork(void) {
     downOld = 0;
     upOld = 0;
 
-    // format for up and down graphs
-    format = config.get("network_format").c_str();
-
     // init wireless interface paths
     wireless.name = config.get("network_wireless_interface").c_str();
+    wireless.format = config.get("network_format_wireless").c_str();
     asprintf(&wireless.pathDown, "/sys/class/net/%s/statistics/rx_bytes", wireless.name);
     asprintf(&wireless.pathUp, "/sys/class/net/%s/statistics/tx_bytes", wireless.name);
     asprintf(&wireless.pathCarrier, "/sys/class/net/%s/carrier", wireless.name);
 
     // init wired interface paths
     wired.name = config.get("network_wired_interface").c_str();
+    wired.format = config.get("network_format_wired").c_str();
     asprintf(&wired.pathDown, "/sys/class/net/%s/statistics/rx_bytes", wired.name);
     asprintf(&wired.pathUp, "/sys/class/net/%s/statistics/tx_bytes", wired.name);
     asprintf(&wired.pathCarrier, "/sys/class/net/%s/carrier", wired.name);
@@ -55,8 +54,11 @@ void PluginNetwork::update(void) {
     if (active) {
         down = getDown();
         up = getUp();
+        asprintf(&statusLine, active->format, down, up);
+    } else {
+        // some hardcoded format, doesn't matter because down and up are 0, but active is NULL
+        asprintf(&statusLine, wired.format, down, up);
     }
-    asprintf(&statusLine, format, down, up);
 }
 
 unsigned long PluginNetwork::getDown(void) {
