@@ -4,7 +4,7 @@
 
 PluginIP::PluginIP(void) {
     name = "PluginIP";
-    timeout = 30;
+    timeout = 10;
     timeoutOffset = 2;
     format = config.get("ip_format").c_str();
 
@@ -18,8 +18,10 @@ PluginIP::~PluginIP(void) {
 }
 
 void PluginIP::update(void) {
-    if (statusLine != NULL)
+    if (statusLine != NULL) {
         free(statusLine);
+        statusLine = NULL;
+    }
 
     if (failed)
         throw 1;

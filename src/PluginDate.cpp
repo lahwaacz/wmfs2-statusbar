@@ -6,8 +6,10 @@ PluginDate::PluginDate(void) {
 }
 
 void PluginDate::update(void) {
-    if (statusLine != NULL)
+    if (statusLine != NULL) {
         free(statusLine);
+        statusLine = NULL;
+    }
 
     t = time(0);
     tm = localtime(&t);

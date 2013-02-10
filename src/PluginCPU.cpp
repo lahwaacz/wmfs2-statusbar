@@ -8,8 +8,10 @@ PluginCPU::PluginCPU(void) {
 }
 
 void PluginCPU::update(void) {
-    if (statusLine != NULL)
+    if (statusLine != NULL) {
         free(statusLine);
+        statusLine = NULL;
+    }
 
     unsigned long active[3];
     unsigned long idle;

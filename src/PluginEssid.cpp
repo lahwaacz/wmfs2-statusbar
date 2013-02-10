@@ -4,7 +4,7 @@
 
 PluginEssid::PluginEssid(void) {
     name = "PluginEssid";
-    timeout = 30;
+    timeout = 10;
     timeoutOffset = 1;
     format = config.get("essid_format").c_str();
     wirelessName = config.get("network_wireless_interface").c_str();
@@ -20,8 +20,10 @@ PluginEssid::~PluginEssid(void) {
 }
 
 void PluginEssid::update(void) {
-    if (statusLine != NULL)
+    if (statusLine != NULL) {
         free(statusLine);
+        statusLine = NULL;
+    }
 
     if (failed)
         throw 1;

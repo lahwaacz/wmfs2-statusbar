@@ -12,8 +12,10 @@ PluginMPD::~PluginMPD(void) {
 }
 
 void PluginMPD::update(void) {
-    if (statusLine != NULL)
+    if (statusLine != NULL) {
         free(statusLine);
+        statusLine = NULL;
+    }
 
     int totalTime = 0;
     int elapsedTime = 0;

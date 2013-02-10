@@ -14,8 +14,10 @@ PluginBattery::PluginBattery(void) {
 }
 
 void PluginBattery::update(void) {
-    if (statusLine != NULL)
+    if (statusLine != NULL) {
         free(statusLine);
+        statusLine = NULL;
+    }
 
     readFileInt(&full, pathFull);
     readFileInt(&now, pathNow);

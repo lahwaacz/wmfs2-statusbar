@@ -11,8 +11,10 @@ PluginVolume::~PluginVolume(void) {
 }
 
 void PluginVolume::update(void) {
-    if (statusLine != NULL)
+    if (statusLine != NULL) {
         free(statusLine);
+        statusLine = NULL;
+    }
 
     if (client == NULL)
         reconnect();
