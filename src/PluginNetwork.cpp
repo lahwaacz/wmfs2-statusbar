@@ -12,27 +12,27 @@ PluginNetwork::PluginNetwork(void) {
     wireless.name = config.get("network_wireless_interface").c_str();
     asprintf(&wireless.pathDown, "/sys/class/net/%s/statistics/rx_bytes", wireless.name);
     asprintf(&wireless.pathUp, "/sys/class/net/%s/statistics/tx_bytes", wireless.name);
-    asprintf(&wireless.pathState, "/sys/class/net/%s/operstate", wireless.name);
+    asprintf(&wireless.pathCarrier, "/sys/class/net/%s/carrier", wireless.name);
 
     // init wired interface paths
     wired.name = config.get("network_wired_interface").c_str();
     asprintf(&wired.pathDown, "/sys/class/net/%s/statistics/rx_bytes", wired.name);
     asprintf(&wired.pathUp, "/sys/class/net/%s/statistics/tx_bytes", wired.name);
-    asprintf(&wired.pathState, "/sys/class/net/%s/operstate", wired.name);
+    asprintf(&wired.pathCarrier, "/sys/class/net/%s/carrier", wired.name);
 }
 
 void PluginNetwork::setActiveInterface(void) {
-    char operstate[8];
+    int carrier = 0;
 
-    readFileStr(operstate, 8, wireless.pathState);
-    if (std::strncmp(operstate, "up", 2) == 0) {
+    readFileInt(&carrier, wireless.pathCarrier);
+    if (carrier != 0) {
         config.set("network_active_interface", wireless.name);
         active = &wireless;
         return;
     }
 
-    readFileStr(operstate, 8, wired.pathState);
-    if (std::strncmp(operstate, "up", 2) == 0) {
+    readFileInt(&carrier, wired.pathCarrier);
+    if (carrier != 0) {
         config.set("network_active_interface", wired.name);
         active = &wired;
         return;
@@ -61,7 +61,7 @@ void PluginNetwork::update(void) {
 
 unsigned long PluginNetwork::getDown(void) {
     unsigned long down = 0;
-    readFileInt(&down, active->pathDown);
+    readFileUnsignedLong(&down, active->pathDown);
     down /= 1024;
     unsigned long speed = 0;
 
@@ -73,7 +73,7 @@ unsigned long PluginNetwork::getDown(void) {
 
 unsigned long PluginNetwork::getUp(void) {
     unsigned long up = 0;
-    readFileInt(&up, active->pathUp);
+    readFileUnsignedLong(&up, active->pathUp);
     up /= 1024;
     unsigned long speed = 0;
 

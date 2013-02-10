@@ -11,11 +11,19 @@
 // declared in main.cpp
 extern Config config;
 
-inline void readFileInt(unsigned long* var, const char* path) {
+inline void readFileUnsignedLong(unsigned long* var, const char* path) {
     FILE *f = fopen(path, "r");
     if (!f)
         throw 1;
     fscanf(f, "%lu", var);
+    fclose(f);
+}
+
+inline void readFileInt(int* var, const char* path) {
+    FILE *f = fopen(path, "r");
+    if (!f)
+        throw 1;
+    fscanf(f, "%i", var);
     fclose(f);
 }
 

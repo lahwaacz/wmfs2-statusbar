@@ -19,8 +19,8 @@ void PluginBattery::update(void) {
         statusLine = NULL;
     }
 
-    readFileInt(&full, pathFull);
-    readFileInt(&now, pathNow);
+    readFileUnsignedLong(&full, pathFull);
+    readFileUnsignedLong(&now, pathNow);
     char state[16];
     readFileStr(state, 16, pathState);
   

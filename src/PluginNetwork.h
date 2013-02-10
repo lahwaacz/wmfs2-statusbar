@@ -6,7 +6,7 @@ struct NetworkInterface {
     const char* name;
     char* pathDown = NULL;
     char* pathUp = NULL;
-    char* pathState = NULL;
+    char* pathCarrier = NULL;
     
     // Destructor
     ~NetworkInterface() {
@@ -14,8 +14,8 @@ struct NetworkInterface {
             free(pathDown);
         if (pathUp)
             free(pathUp);
-        if (pathState)
-            free(pathState);
+        if (pathCarrier)
+            free(pathCarrier);
     }
 };
 
