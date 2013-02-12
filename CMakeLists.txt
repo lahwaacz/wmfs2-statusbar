@@ -13,9 +13,9 @@ if(NOT CMAKE_BUILD_TYPE)
 endif()
 message(STATUS "Build type: ${CMAKE_BUILD_TYPE}")
 
-project(wmfs2-statusbar)
+project(wmfs-statusbar)
 
-set(wmfs2-statusbar_SOURCES
+set(wmfs-statusbar_SOURCES
     src/main.cpp
     src/ConfigParser.cpp
     src/Xstatus.cpp
@@ -30,16 +30,16 @@ set(wmfs2-statusbar_SOURCES
     src/PluginVolume.cpp
     src/pulse.cpp
 )
-add_executable(wmfs2-statusbar ${wmfs2-statusbar_SOURCES})
+add_executable(wmfs-statusbar ${wmfs-statusbar_SOURCES})
 
 find_package(PkgConfig)
 
 pkg_check_modules(X11 REQUIRED x11)
 pkg_check_modules(MPD REQUIRED libmpdclient)
 pkg_check_modules(PULSE REQUIRED libpulse)
-target_link_libraries(wmfs2-statusbar ${X11_LIBRARIES})
-target_link_libraries(wmfs2-statusbar ${MPD_LIBRARIES})
-target_link_libraries(wmfs2-statusbar ${PULSE_LIBRARIES})
+target_link_libraries(wmfs-statusbar ${X11_LIBRARIES})
+target_link_libraries(wmfs-statusbar ${MPD_LIBRARIES})
+target_link_libraries(wmfs-statusbar ${PULSE_LIBRARIES})
 
 set(CMAKE_CXX_FLAGS "-std=c++11 -lstdc++ -Wall")
 set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -D DEBUG")
@@ -48,13 +48,13 @@ if(CMAKE_BUILD_TYPE STREQUAL "Debug")
     find_package(Boost 1.40 COMPONENTS timer system)
     if(Boost_FOUND)
         include_directories(${Boost_INCLUDE_DIR})
-        target_link_libraries(wmfs2-statusbar ${Boost_LIBRARIES})
+        target_link_libraries(wmfs-statusbar ${Boost_LIBRARIES})
         add_definitions("-D WITH_BOOST")
     endif()
 endif()
 
 message(STATUS "Install prefix: " ${CMAKE_INSTALL_PREFIX})
-INSTALL(TARGETS wmfs2-statusbar
+INSTALL(TARGETS wmfs-statusbar
     RUNTIME DESTINATION bin
     LIBRARY DESTINATION lib
     ARCHIVE DESTINATION lib
