@@ -28,7 +28,7 @@ void Config::setDefaults(void) {
     dict["essid_format"]                = "^s[left;#1793d0;ESSID]^s[left;#dddddd; %s]";
     dict["ip_format"]                   = "^s[left;#1793d0;IP]^s[left;#dddddd; %s]";
     dict["network_format_wireless"]     = "^s[left;#1793d0;Down ]^g[left;100;14;%d;300;#333333;#1c9a34;down] ^s[left;#888888; - ] ^s[left;#1793d0;Up ]^g[left;100;14;%d;300;#333333;#bc1e1e;up]";
-    dict["network_format_wired"]        = "^s[left;#1793d0;Down ]^g[left;100;14;%d;5000;#888888;#00af00;down] ^s[left;#888888; - ] ^s[left;#1793d0;Up ]^g[left;100;14;%d;5000;#888888;#af0000;up]";
+    dict["network_format_wired"]        = "^s[left;#1793d0;Down ]^g[left;100;14;%d;5000;#333333;#1c9a34;down] ^s[left;#888888; - ] ^s[left;#1793d0;Up ]^g[left;100;14;%d;5000;#333333;#bc1e1e;up]";
     dict["network_wired_interface"]     = "eth0";
     dict["network_wireless_interface"]  = "wlan0";
     dict["network_active_interface"]    = "";
