@@ -4,3 +4,8 @@ CMakeFiles/
 cmake_install.cmake
 install_manifest.txt
 Makefile
+
+# eclipse project files
+.project
+.cproject
+.settings/

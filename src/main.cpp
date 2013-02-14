@@ -1,5 +1,4 @@
-#include <unistd.h> /* for sleep() */
-#include <signal.h> /* signal handler */
+#include <unistd.h> /* for sleep(), getopt() */
 #include <cstdlib>  /* for exit() */
 
 #include <iostream>
@@ -21,17 +20,55 @@
 #include "PluginVolume.h"
 
 #ifdef DEBUG
-#include "debug.h"
+#include <boost/timer/timer.hpp>
 #endif // DEBUG
-
-#define LEFT_SEP "^s[left;#898989; - ]"
-#define RIGHT_SEP "^s[right;#898989; - ]"
 
 Config config = Config();       // global to share between plugins
 
+// holds parsed command line options
+const char *configPath = NULL;     /* -c option */
+
+static const char *optString = "hc:";
+
+static void usage(void) {
+    printf("usage: %s [-c <path-to-config-file>]\n", program_invocation_short_name);
+    exit(EXIT_SUCCESS);
+}
+
+bool parseArgs(int argc, char **argv) {
+    for (;;) {
+        int opt = getopt(argc, argv, optString);
+        if (opt == -1)
+            break;
+
+        switch (opt) {
+            case 'c':
+                configPath = optarg;
+                break;
+            case 'h':
+                usage();
+                break;
+            default:
+                return false;
+        }
+    }
+    return true;
+}
+
 int main(int argc, char **argv) {
+    // parse command line arguments
+    if (!parseArgs(argc, argv))
+        return 1;
+
+    // load config file if specified
+    if (configPath)
+        config.parseFile(configPath);
+
+    #ifdef DEBUG
+    config.print();     // dump config values
+    #endif // DEBUG
+
     Xstatus xstatus = Xstatus();
-//    config.parseConfigFile("pokus.conf");
 
     Plugin* bat = new PluginBattery();
     Plugin* cpu = new PluginCPU();
@@ -43,10 +80,11 @@ int main(int argc, char **argv) {
     Plugin* ram = new PluginRAM();
     Plugin* vol = new PluginVolume();
 
-    std::vector<Plugin*> plugins = {ram, cpu, net, mpd, essid, ip, bat, vol, date};
+//    std::vector<Plugin*> plugins = {ram, cpu, net, mpd, essid, ip, bat, vol, date};
+    std::vector<Plugin*> plugins = {ram, cpu, net, essid, ip, bat, vol, date};
 
     // at the start update every plugin
-    for (int i = 0; i < plugins.size(); i++) {
+    for (unsigned int i = 0; i < plugins.size(); i++) {
         try {
             plugins[i]->update();
         } catch (...) {
@@ -81,7 +119,7 @@ int main(int argc, char **argv) {
         #endif // WITH_BOOST
 
         statusLine = "default ";
-        for (int i = 0; i < plugins.size(); i++) {
+        for (unsigned int i = 0; i < plugins.size(); i++) {
             statusLine += LEFT_SEP;
 
             if (counter % plugins[i]->getTimeout() == plugins[i]->getTimeoutOffset()) {

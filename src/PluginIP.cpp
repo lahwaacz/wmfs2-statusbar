@@ -6,7 +6,6 @@ PluginIP::PluginIP(void) {
     name = "PluginIP";
     timeout = 10;
     timeoutOffset = 2;
-    format = config.get("ip_format").c_str();
 
     sockfd = socket(AF_INET, SOCK_DGRAM, 0);
     if (sockfd == -1)
@@ -27,7 +26,10 @@ void PluginIP::update(void) {
         throw 1;
     else {
         ifr = {};
-        strncpy(ifr.ifr_name, config.get("network_active_interface").c_str(), IFNAMSIZ-1);
+        if (config.network_active_interface)
+            strncpy(ifr.ifr_name, *(config.network_active_interface), IFNAMSIZ-1);
+        else
+            strncpy(ifr.ifr_name, "lo", IFNAMSIZ-1);
 
         /* I want to get an IPv4 IP address */
         ifr.ifr_addr.sa_family = AF_INET;
@@ -36,7 +38,7 @@ void PluginIP::update(void) {
             throw 1;
 //            log("Get IP address ioctl failed");
         } else {
-            asprintf(&statusLine, format, inet_ntoa(((struct sockaddr_in *)&ifr.ifr_addr)->sin_addr));
+            asprintf(&statusLine, config.ip_format.c_str(), inet_ntoa(((struct sockaddr_in *)&ifr.ifr_addr)->sin_addr));
         }
     }
 }

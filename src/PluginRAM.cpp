@@ -2,7 +2,6 @@
 
 PluginRAM::PluginRAM(void) {
     name = "PluginRAM";
-    format = config.get("ram_format").c_str();
 }
 
 void PluginRAM::update(void) {
@@ -22,6 +21,6 @@ void PluginRAM::update(void) {
               "Buffers:  %ld kB\n"
               "Cached:   %ld kB\n", &total, &mfree, &buf, &cache);
     fclose(f);
-    asprintf(&statusLine, format, (total - (mfree + buf + cache)), total);
+    asprintf(&statusLine, config.ram_format.c_str(), (total - (mfree + buf + cache)), total);
 }
 

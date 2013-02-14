@@ -6,15 +6,15 @@ PluginNetwork::PluginNetwork(void) {
     upOld = 0;
 
     // init wireless interface paths
-    wireless.name = config.get("network_wireless_interface").c_str();
-    wireless.format = config.get("network_format_wireless").c_str();
+    wireless.name = config.network_wireless_interface.c_str();
+    wireless.format = config.network_format_wireless.c_str();
     asprintf(&wireless.pathDown, "/sys/class/net/%s/statistics/rx_bytes", wireless.name);
     asprintf(&wireless.pathUp, "/sys/class/net/%s/statistics/tx_bytes", wireless.name);
     asprintf(&wireless.pathCarrier, "/sys/class/net/%s/carrier", wireless.name);
 
     // init wired interface paths
-    wired.name = config.get("network_wired_interface").c_str();
-    wired.format = config.get("network_format_wired").c_str();
+    wired.name = config.network_wired_interface.c_str();
+    wired.format = config.network_format_wired.c_str();
     asprintf(&wired.pathDown, "/sys/class/net/%s/statistics/rx_bytes", wired.name);
     asprintf(&wired.pathUp, "/sys/class/net/%s/statistics/tx_bytes", wired.name);
     asprintf(&wired.pathCarrier, "/sys/class/net/%s/carrier", wired.name);
@@ -25,19 +25,19 @@ void PluginNetwork::setActiveInterface(void) {
 
     readFileInt(&carrier, wireless.pathCarrier);
     if (carrier != 0) {
-        config.set("network_active_interface", wireless.name);
+        config.network_active_interface = &wireless.name;
         active = &wireless;
         return;
     }
 
     readFileInt(&carrier, wired.pathCarrier);
     if (carrier != 0) {
-        config.set("network_active_interface", wired.name);
+        config.network_active_interface = &wired.name;
         active = &wired;
         return;
     }
 
-    config.set("network_active_interface", "lo");
+    config.network_active_interface = NULL;
     active = NULL;
 }
 

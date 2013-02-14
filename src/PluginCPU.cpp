@@ -4,7 +4,6 @@ PluginCPU::PluginCPU(void) {
     name = "PluginCPU";
     idleOld = 0;
     totalOld = 0;
-    format = config.get("cpu_format").c_str();
 }
 
 void PluginCPU::update(void) {
@@ -32,6 +31,6 @@ void PluginCPU::update(void) {
     totalOld = total;
     idleOld = idle;
   
-    asprintf(&statusLine, format, (int)percent);
+    asprintf(&statusLine, config.cpu_format.c_str(), (int)percent);
 }
 

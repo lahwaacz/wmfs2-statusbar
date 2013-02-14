@@ -3,11 +3,11 @@
 #include "PluginBase.h"
 
 struct NetworkInterface {
-    const char* name;
-    const char* format;
-    char* pathDown = NULL;
-    char* pathUp = NULL;
-    char* pathCarrier = NULL;
+    const char *name;
+    const char *format;
+    char *pathDown = NULL;
+    char *pathUp = NULL;
+    char *pathCarrier = NULL;
     
     // Destructor
     ~NetworkInterface() {
@@ -26,7 +26,7 @@ class PluginNetwork : public Plugin {
         unsigned long upOld;
         NetworkInterface wireless;
         NetworkInterface wired;
-        NetworkInterface* active = NULL;
+        NetworkInterface *active = NULL;
 
     public:
         PluginNetwork(void);

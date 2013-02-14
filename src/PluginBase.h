@@ -11,7 +11,7 @@
 // declared in main.cpp
 extern Config config;
 
-inline void readFileUnsignedLong(unsigned long* var, const char* path) {
+inline void readFileUnsignedLong(unsigned long *var, const char *path) {
     FILE *f = fopen(path, "r");
     if (!f)
         throw 1;
@@ -19,7 +19,7 @@ inline void readFileUnsignedLong(unsigned long* var, const char* path) {
     fclose(f);
 }
 
-inline void readFileInt(int* var, const char* path) {
+inline void readFileInt(int *var, const char *path) {
     FILE *f = fopen(path, "r");
     if (!f)
         throw 1;
@@ -27,7 +27,7 @@ inline void readFileInt(int* var, const char* path) {
     fclose(f);
 }
 
-inline void readFileStr(char* buffer, int size, const char* path) {
+inline void readFileStr(char *buffer, int size, const char *path) {
     FILE *f = fopen(path, "r");
     if (!f)
         throw 1;
@@ -38,15 +38,14 @@ inline void readFileStr(char* buffer, int size, const char* path) {
 
 class Plugin {
     protected:
-        const char* name = "<no-name-plugin>";
-        const char* format;
+        const char *name = "<no-name-plugin>";
         bool failed = false;
         unsigned int timeout = 1;
         unsigned int timeoutOffset = 0;
-        char* statusLine = NULL;
+        char *statusLine = NULL;
 
     public:
-        const char* getName(void) {return name;};
+        const char *getName(void) {return name;};
         unsigned int getTimeout(void) {return timeout;};
         void setTimeout(unsigned int timeout) {this->timeout = timeout;};
         unsigned int getTimeoutOffset(void) {return timeoutOffset;};

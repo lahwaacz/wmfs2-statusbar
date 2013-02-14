@@ -1,43 +1,53 @@
 #pragma once
 
 #include <iostream>
-#include <sstream>
 #include <fstream>
 #include <string>
-#include <map>
-#include <utility>
-#include <algorithm> 
+
+#include "picojson.h"
 
 using namespace std;
 
-// trim from start
-static inline string &ltrim(string &s) {
-    s.erase(s.begin(), find_if(s.begin(), s.end(), not1(ptr_fun<int, int>(isspace))));
-    return s;
-}
-
-// trim from end
-static inline string &rtrim(string &s) {
-    s.erase(find_if(s.rbegin(), s.rend(), not1(ptr_fun<int, int>(isspace))).base(), s.end());
-    return s;
-}
-
-// trim from both ends
-static inline string &trim(string &s) {
-    return ltrim(rtrim(s));
-}
-
-typedef map<string, string> t_dict;
+// TODO: move this into Config class
+#define LEFT_SEP "^s[left;#888888; - ]"
+#define RIGHT_SEP "^s[right;#888888; - ]"
 
 
 class Config {
-    private:
-        t_dict dict;
     public:
         Config(void);
         void setDefaults(void);
-        void set(string key, string value);
-        string get(string key);
-        void print(ostream& stream = cout);
-        void parseConfigFile(string path);
+        bool parseFile(string path);
+        void parsePair(const string & key, const picojson::value & value);
+
+        // automatically changes between wired and wireless, not configurable
+        const char **network_active_interface = NULL;
+
+        // configurable properties
+        string battery_format;
+        string battery_path_full;
+        string battery_path_now;
+        string battery_path_state;
+        int battery_critical_percent;
+        string battery_critical_action1;
+        int battery_critical_timeout;
+        string battery_critical_action2;
+
+        string cpu_format;
+        string date_format;
+        string essid_format;
+        string ip_format;
+
+        string network_format_wireless;
+        string network_format_wired;
+        string network_wireless_interface;
+        string network_wired_interface;
+
+        string ram_format;
+        string volume_format;
+
+        // debug only
+        #ifdef DEBUG
+        void print(void);
+        #endif // DEBUG
 };

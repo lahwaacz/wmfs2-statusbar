@@ -17,6 +17,7 @@ Build dependencies
  -  libmpdclient - MPD plugin
  -  libpulse - PulseAudio plugin
  -  (optional) boost - currently for debug purposes only
+ -  [picojson](https://github.com/kazuho/picojson) - for parsing configuration files; included in project tree
 
 Runtime dependencies
 --------------------
@@ -37,4 +38,6 @@ Compilation
 Configuration
 -------------
 
-Runtime configuration is not currently supported, you need to make changes in source code and recompile.
+Runtime configuration is supported via JSON config files. Path to the file can be specified using the `-c` argument:
+
+    ./wmfs-statusbar -c /path/to/config-file

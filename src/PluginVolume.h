@@ -11,8 +11,8 @@
 
 class PluginVolume : public Plugin {
     private:
-        PulseClient* client = NULL;
-        Device* device = NULL;
+        PulseClient *client = NULL;
+        Device *device = NULL;
         ServerInfo defaults = {};
 
     public:

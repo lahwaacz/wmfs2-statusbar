@@ -2,7 +2,6 @@
 
 PluginVolume::PluginVolume(void) {
     name = "PluginVolume";
-    format = config.get("volume_format").c_str();
     connect();
 }
 
@@ -20,7 +19,7 @@ void PluginVolume::update(void) {
         reconnect();
 
     client->populate_sinks();
-    asprintf(&statusLine, format, device->Volume());
+    asprintf(&statusLine, config.volume_format.c_str(), device->Volume());
 }
 
 void PluginVolume::connect(void) {

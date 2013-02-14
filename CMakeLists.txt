@@ -13,8 +13,10 @@ if(NOT CMAKE_BUILD_TYPE)
 endif()
 message(STATUS "Build type: ${CMAKE_BUILD_TYPE}")
 
+# set project name
 project(wmfs-statusbar)
 
+# set sources for wmfs-statusbar executable
 set(wmfs-statusbar_SOURCES
     src/main.cpp
     src/ConfigParser.cpp
@@ -32,6 +34,7 @@ set(wmfs-statusbar_SOURCES
 )
 add_executable(wmfs-statusbar ${wmfs-statusbar_SOURCES})
 
+# find dynamic dependencies
 find_package(PkgConfig)
 
 pkg_check_modules(X11 REQUIRED x11)
@@ -53,6 +56,7 @@ if(CMAKE_BUILD_TYPE STREQUAL "Debug")
     endif()
 endif()
 
+# install path
 message(STATUS "Install prefix: " ${CMAKE_INSTALL_PREFIX})
 INSTALL(TARGETS wmfs-statusbar
     RUNTIME DESTINATION bin
