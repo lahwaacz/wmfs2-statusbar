@@ -20,7 +20,7 @@ void PluginCPU::update(void) {
     FILE *f = fopen("/proc/stat", "r");
   
     if (!f)
-        throw 1;
+        throw "unable to read /proc/stat";
   
     fscanf(f, "%*s %lu %lu %lu %lu", &active[0], &active[1], &active[2], &idle);
     fclose(f);

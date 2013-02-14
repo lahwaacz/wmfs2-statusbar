@@ -23,20 +23,19 @@ void PluginIP::update(void) {
     }
 
     if (failed)
-        throw 1;
+        throw "unable to create socket";
     else {
         ifr = {};
         if (config.network_active_interface)
             strncpy(ifr.ifr_name, *(config.network_active_interface), IFNAMSIZ-1);
-        else
+        else    // default to loopback
             strncpy(ifr.ifr_name, "lo", IFNAMSIZ-1);
 
         /* I want to get an IPv4 IP address */
         ifr.ifr_addr.sa_family = AF_INET;
 
         if (ioctl(sockfd, SIOCGIFADDR, &ifr) == -1) {
-            throw 1;
-//            log("Get IP address ioctl failed");
+            throw "get IP address ioctl failed";
         } else {
             asprintf(&statusLine, config.ip_format.c_str(), inet_ntoa(((struct sockaddr_in *)&ifr.ifr_addr)->sin_addr));
         }

@@ -19,9 +19,10 @@
 #include "PluginRAM.h"
 #include "PluginVolume.h"
 
-#ifdef DEBUG
+#ifdef WITH_BOOST
 #include <boost/timer/timer.hpp>
-#endif // DEBUG
+#endif // WITH_BOOST
+
 
 Config config = Config();       // global to share between plugins
 
@@ -29,6 +30,7 @@ Config config = Config();       // global to share between plugins
 const char *configPath = NULL;     /* -c option */
 
 static const char *optString = "hc:";
+
 
 static void usage(void) {
     printf("usage: %s [-c <path-to-config-file>]\n", program_invocation_short_name);
@@ -87,8 +89,9 @@ int main(int argc, char **argv) {
     for (unsigned int i = 0; i < plugins.size(); i++) {
         try {
             plugins[i]->update();
-        } catch (...) {
-            std::cerr << "Failed to update plugin '" << plugins[i]->getName() << "'." << std::endl;
+        } catch (const char *msg) {
+            std::cerr << "Failed to update plugin '" << plugins[i]->getName() << "': ";
+            std::cerr << msg << std::endl;
         }
 
         // check if timeout and timeoutOffset are sane
@@ -111,10 +114,8 @@ int main(int argc, char **argv) {
     int counter = 0;
     for (;;) {
         sleep(1);
-        #ifdef DEBUG
-        std::cout << std::endl;
-        #endif // DEBUG
         #ifdef WITH_BOOST
+        std::cout << std::endl;
         boost::timer::auto_cpu_timer t;
         #endif // WITH_BOOST
 
@@ -123,20 +124,19 @@ int main(int argc, char **argv) {
             statusLine += LEFT_SEP;
 
             if (counter % plugins[i]->getTimeout() == plugins[i]->getTimeoutOffset()) {
-                #ifdef DEBUG
-                std::cout << "Updating " << plugins[i]->getName() << "\t";
-                #endif // DEBUG
                 #ifdef WITH_BOOST
+                std::cout << "Updating " << plugins[i]->getName() << "\t";
                 boost::timer::auto_cpu_timer t;
                 #endif // WITH_BOOST
 
                 try {
                     plugins[i]->update();
-                } catch (...) {
-                    std::cerr << "Failed to update plugin '" << plugins[i]->getName() << "'." << std::endl;
+                } catch (const char *msg) {
+                    std::cerr << "Failed to update plugin '" << plugins[i]->getName() << "': ";
+                    std::cerr << msg << std::endl;
                 }
             }
-            char* pluginStatus = plugins[i]->getStatusLine();
+            char *pluginStatus = plugins[i]->getStatusLine();
             if (pluginStatus == NULL) {
                 statusLine += "^s[left;#ff0000;Plugin '";
                 statusLine += plugins[i]->getName();
@@ -148,8 +148,8 @@ int main(int argc, char **argv) {
         xstatus.sendStatus(statusLine);
         counter++;
 
-        #ifdef DEBUG
+        #ifdef WITH_BOOST
         std::cout << "Total:\t\t\t";
-        #endif // DEBUG
+        #endif // WITH_BOOST
     }
 }

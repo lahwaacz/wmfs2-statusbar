@@ -8,7 +8,6 @@ PluginBattery::PluginBattery(void) {
     pathFull = config.battery_path_full.c_str();
     pathNow = config.battery_path_now.c_str();
     pathState = config.battery_path_state.c_str();
-    criticalPercent = config.battery_critical_percent;
 }
 
 void PluginBattery::update(void) {
@@ -24,7 +23,7 @@ void PluginBattery::update(void) {
   
     int percent = full == 0 ? -1 : 100 * now / full;
 
-    if (std::strncmp(state, "Discharging", 2) == 0 and percent >= 0 and percent <= criticalPercent) {
+    if (std::strncmp(state, "Discharging", 2) == 0 and percent >= 0 and percent <= config.battery_critical_percent) {
         if (! config.battery_critical_action1.empty()) {
             std::system(config.battery_critical_action1.c_str());
             if (! config.battery_critical_action2.empty()) {

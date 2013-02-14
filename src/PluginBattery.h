@@ -9,7 +9,6 @@ class PluginBattery : public Plugin {
         const char *pathFull;
         const char *pathNow;
         const char *pathState;
-        int criticalPercent;
     public:
         PluginBattery(void);
         void update(void);

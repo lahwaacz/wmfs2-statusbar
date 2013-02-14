@@ -47,7 +47,7 @@ bool Config::parseFile(string path) {
             for (picojson::object::const_iterator i = o.begin(); i != o.end(); ++i) {
                 try {
                     parsePair(i->first, i->second);
-                } catch (const char* msg) {
+                } catch (const char *msg) {
                     errorMessage = msg;
                     break;
                 }

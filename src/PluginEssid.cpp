@@ -24,7 +24,7 @@ void PluginEssid::update(void) {
     }
 
     if (failed)
-        throw 1;
+        throw "unable to create socket";
     else {
         wreq = {};
         strncpy(wreq.ifr_name, wirelessName, IFNAMSIZ-1);
@@ -34,8 +34,7 @@ void PluginEssid::update(void) {
         wreq.u.essid.length = IW_ESSID_MAX_SIZE;
 
         if (ioctl(sockfd, SIOCGIWESSID, &wreq) == -1) {
-            throw 1;
-//            log("Get ESSID ioctl failed");
+            throw "get ESSID ioctl failed";
         } else {
             asprintf(&statusLine, config.essid_format.c_str(), buffer);
         }

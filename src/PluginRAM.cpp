@@ -14,7 +14,7 @@ void PluginRAM::update(void) {
     FILE *f = fopen("/proc/meminfo", "r");
   
     if (!f)
-        throw 1;
+        throw "unable to read /proc/meminfo";
   
     fscanf(f, "MemTotal: %ld kB\n"
               "MemFree:  %ld kB\n"
