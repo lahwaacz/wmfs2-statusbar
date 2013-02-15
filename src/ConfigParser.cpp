@@ -16,6 +16,8 @@ Config::Config(void) {
     date_format                 = "^s[right;#dddddd;%s]";
     essid_format                = "^s[left;#1793d0;ESSID]^s[left;#dddddd; %s]";
     ip_format                   = "^s[left;#1793d0;IP]^s[left;#dddddd; %s]";
+    mpd_format                  = "^s[right;#1793d0;MPD ]^s[right;#dddddd;%d:%02d / %d:%02d ]^P[right;100;6;3;%d;%d;#333333;#11ff11]^s[right;#dddddd; %s]";
+
     network_format_wireless     = "^s[left;#1793d0;Down ]^g[left;100;14;%d;300;#333333;#1c9a34;down] ^s[left;#888888; - ] ^s[left;#1793d0;Up ]^g[left;100;14;%d;300;#333333;#bc1e1e;up]";
     network_format_wired        = "^s[left;#1793d0;Down ]^g[left;100;14;%d;5000;#333333;#1c9a34;down] ^s[left;#888888; - ] ^s[left;#1793d0;Up ]^g[left;100;14;%d;5000;#333333;#bc1e1e;up]";
     network_wired_interface     = "eth0";
@@ -100,6 +102,9 @@ void Config::parsePair(const string & key, const picojson::value & value) {
         essid_format = value.get<string>();
     else if (key.compare("ip_format") == 0)
         ip_format = value.get<string>();
+    else if (key.compare("mpd_format") == 0)
+        mpd_format = value.get<string>();
+
     else if (key.compare("network_format_wireless") == 0)
         network_format_wireless = value.get<string>();
     else if (key.compare("network_format_wired") == 0)
@@ -133,6 +138,7 @@ void Config::print(void) {
     SHOW (date_format);
     SHOW (essid_format);
     SHOW (ip_format);
+    SHOW (mpd_format);
 
     SHOW (network_format_wireless);
     SHOW (network_format_wired);

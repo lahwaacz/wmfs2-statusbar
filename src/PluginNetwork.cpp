@@ -42,10 +42,9 @@ void PluginNetwork::setActiveInterface(void) {
 }
 
 void PluginNetwork::update(void) {
-    if (statusLine != NULL) {
-        free(statusLine);
-        statusLine = NULL;
-    }
+    // first cleanup and init statusLine
+    free(statusLine);
+    statusLine = NULL;
 
     this->setActiveInterface();
 

@@ -11,10 +11,9 @@ PluginBattery::PluginBattery(void) {
 }
 
 void PluginBattery::update(void) {
-    if (statusLine != NULL) {
-        free(statusLine);
-        statusLine = NULL;
-    }
+    // first cleanup and init statusLine
+    free(statusLine);
+    statusLine = NULL;
 
     readFileUnsignedLong(&full, pathFull);
     readFileUnsignedLong(&now, pathNow);

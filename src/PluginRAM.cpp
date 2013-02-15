@@ -5,10 +5,9 @@ PluginRAM::PluginRAM(void) {
 }
 
 void PluginRAM::update(void) {
-    if (statusLine != NULL) {
-        free(statusLine);
-        statusLine = NULL;
-    }
+    // first cleanup and init statusLine
+    free(statusLine);
+    statusLine = NULL;
 
     long total, mfree, buf, cache;
     FILE *f = fopen("/proc/meminfo", "r");

@@ -10,16 +10,22 @@ PluginVolume::~PluginVolume(void) {
 }
 
 void PluginVolume::update(void) {
-    if (statusLine != NULL) {
-        free(statusLine);
-        statusLine = NULL;
-    }
+    // first cleanup and init statusLine
+    free(statusLine);
+    statusLine = NULL;
 
     if (client == NULL)
         reconnect();
 
     client->populate_sinks();
-    asprintf(&statusLine, config.volume_format.c_str(), device->Volume());
+    if (device->Muted()) {
+        asprintf(&statusLine, config.volume_format.c_str(), "M");
+    } else {
+        char *perc;
+        asprintf(&perc, "%d%%", device->Volume());
+        asprintf(&statusLine, config.volume_format.c_str(), perc);
+        free(perc);
+    }
 }
 
 void PluginVolume::connect(void) {

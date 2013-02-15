@@ -12,42 +12,41 @@ PluginMPD::~PluginMPD(void) {
 }
 
 void PluginMPD::update(void) {
-    if (statusLine != NULL) {
-        free(statusLine);
-        statusLine = NULL;
-    }
+    // first cleanup and init statusLine
+    free(statusLine);
+    statusLine = NULL;
 
-    int totalTime = 0;
+    // init variables
     int elapsedTime = 0;
+    int totalTime = 0;
+    int totalPulseBar = 100;    // workarround, setting 0/0 for pulse bar behaves badly
+    char *songInfoText = NULL;
 
     if (!connect())
-        return;
+        throw "unable to connect to MPD daemon";
+
     status = mpd_run_status(connection);
     if (mpd_status_get_state(status) == MPD_STATE_PLAY or mpd_status_get_state(status) == MPD_STATE_PAUSE) {
         song = mpd_run_current_song(connection);
 
-        totalTime = mpd_status_get_total_time(status);
         elapsedTime = mpd_status_get_elapsed_time(status);
+        totalTime = mpd_status_get_total_time(status);
+        totalPulseBar = totalTime;
         
-        asprintf(&statusLine,
-                    "^s[left;#aabbaa;MPD ]"
-                    "^s[left;#dddddd;%d:%02d / %d:%02d ]"
-                    "^P[left;100;6;3;%d;%d;#888888;#11ff11]"
-                    "^s[left;#dddddd; %.20s - %.30s]",
-                 elapsedTime / 60, elapsedTime % 60, totalTime / 60, totalTime % 60,
-                 elapsedTime, totalTime,
+        asprintf(&songInfoText, "%.20s - %.30s", 
                  mpd_song_get_tag(song, MPD_TAG_ARTIST, 0),
                  mpd_song_get_tag(song, MPD_TAG_TITLE, 0));
+
         mpd_song_free(song);
-    } else {
-        asprintf(&statusLine,
-                    "^s[left;#aabbaa;MPD ]"
-                    "^s[left;#dddddd;%d:%02d / %d:%02d ]"
-                    "^P[left;100;6;3;%d;%d;#888888;#11ff11]",
-                 0, 0, 0, 0,
-                 1, 100);
     }
+
+    asprintf(&statusLine, config.mpd_format.c_str(),
+             elapsedTime / 60, elapsedTime % 60, totalTime / 60, totalTime % 60,
+             elapsedTime, totalPulseBar, (songInfoText ? songInfoText : ""));
+
+    // cleanup
     mpd_status_free(status);
+    free(songInfoText);
 
     // until I find way to detect MPD restart...
     disconnect();

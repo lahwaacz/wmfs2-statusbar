@@ -5,10 +5,9 @@ PluginDate::PluginDate(void) {
 }
 
 void PluginDate::update(void) {
-    if (statusLine != NULL) {
-        free(statusLine);
-        statusLine = NULL;
-    }
+    // first cleanup and init statusLine
+    free(statusLine);
+    statusLine = NULL;
 
     t = time(0);
     tm = localtime(&t);

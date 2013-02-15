@@ -82,8 +82,7 @@ int main(int argc, char **argv) {
     Plugin* ram = new PluginRAM();
     Plugin* vol = new PluginVolume();
 
-//    std::vector<Plugin*> plugins = {ram, cpu, net, mpd, essid, ip, bat, vol, date};
-    std::vector<Plugin*> plugins = {ram, cpu, net, essid, ip, bat, vol, date};
+    std::vector<Plugin*> plugins = {mpd, ram, cpu, net, essid, ip, bat, vol, date};
 
     // at the start update every plugin
     for (unsigned int i = 0; i < plugins.size(); i++) {
@@ -121,7 +120,7 @@ int main(int argc, char **argv) {
 
         statusLine = "default ";
         for (unsigned int i = 0; i < plugins.size(); i++) {
-            statusLine += LEFT_SEP;
+            statusLine += RIGHT_SEP;
 
             if (counter % plugins[i]->getTimeout() == plugins[i]->getTimeoutOffset()) {
                 #ifdef WITH_BOOST

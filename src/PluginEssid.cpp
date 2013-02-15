@@ -1,5 +1,3 @@
-#include <string.h> /* for strncpy */
-
 #include "PluginEssid.h"
 
 PluginEssid::PluginEssid(void) {
@@ -18,25 +16,23 @@ PluginEssid::~PluginEssid(void) {
 }
 
 void PluginEssid::update(void) {
-    if (statusLine != NULL) {
-        free(statusLine);
-        statusLine = NULL;
-    }
+    // first cleanup and init statusLine
+    free(statusLine);
+    statusLine = NULL;
 
     if (failed)
         throw "unable to create socket";
-    else {
-        wreq = {};
-        strncpy(wreq.ifr_name, wirelessName, IFNAMSIZ-1);
-        
-        char buffer[IW_ESSID_MAX_SIZE] = {0};
-        wreq.u.essid.pointer = buffer;
-        wreq.u.essid.length = IW_ESSID_MAX_SIZE;
 
-        if (ioctl(sockfd, SIOCGIWESSID, &wreq) == -1) {
-            throw "get ESSID ioctl failed";
-        } else {
-            asprintf(&statusLine, config.essid_format.c_str(), buffer);
-        }
+    wreq = {};
+    strncpy(wreq.ifr_name, wirelessName, IFNAMSIZ-1);
+
+    char buffer[IW_ESSID_MAX_SIZE] = {0};
+    wreq.u.essid.pointer = buffer;
+    wreq.u.essid.length = IW_ESSID_MAX_SIZE;
+
+    if (ioctl(sockfd, SIOCGIWESSID, &wreq) == -1) {
+        throw "get ESSID ioctl failed";
+    } else {
+        asprintf(&statusLine, config.essid_format.c_str(), buffer);
     }
 }

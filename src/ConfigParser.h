@@ -37,6 +37,7 @@ class Config {
         string date_format;
         string essid_format;
         string ip_format;
+        string mpd_format;
 
         string network_format_wireless;
         string network_format_wired;
