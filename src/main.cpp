@@ -137,7 +137,7 @@ int main(int argc, char **argv) {
             }
             char *pluginStatus = plugins[i]->getStatusLine();
             if (pluginStatus == NULL) {
-                statusLine += "^s[left;#ff0000;Plugin '";
+                statusLine += "^s[right;#ff0000;Plugin '";
                 statusLine += plugins[i]->getName();
                 statusLine += "' failed.]";
             } else {

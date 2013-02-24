@@ -114,15 +114,13 @@ PulseClient::PulseClient(string client_name) :
   pa_proplist_free(proplist);
 
   pa_context_set_state_callback(context_, connect_state_cb, &state);
-  pa_context_connect(context_, nullptr, PA_CONTEXT_NOFAIL, nullptr);
+  pa_context_connect(context_, nullptr, PA_CONTEXT_NOFLAGS, nullptr);
   while (state != PA_CONTEXT_READY && state != PA_CONTEXT_FAILED) {
     pa_mainloop_iterate(mainloop_, 1, nullptr);
   }
 
   if (state != PA_CONTEXT_READY) {
-    fprintf(stderr, "failed to connect to pulse daemon: %s\n",
-        pa_strerror(pa_context_errno(context_)));
-    exit(EXIT_FAILURE);
+    throw "failed to connect to pulse daemon";
   }
 }
 

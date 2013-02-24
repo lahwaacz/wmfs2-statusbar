@@ -2,7 +2,6 @@
 
 PluginVolume::PluginVolume(void) {
     name = "PluginVolume";
-    connect();
 }
 
 PluginVolume::~PluginVolume(void) {
