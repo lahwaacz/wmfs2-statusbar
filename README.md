@@ -16,7 +16,6 @@ Build dependencies
  -  xproto - Xatom.h
  -  libmpdclient - MPD plugin
  -  libpulse - PulseAudio plugin
- -  (optional) boost - currently for debug purposes only
  -  [picojson](https://github.com/kazuho/picojson) - for parsing configuration files; included in project tree
 
 Runtime dependencies

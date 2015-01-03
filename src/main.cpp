@@ -19,10 +19,6 @@
 #include "PluginRAM.h"
 #include "PluginVolume.h"
 
-#ifdef WITH_BOOST
-#include <boost/timer/timer.hpp>
-#endif // WITH_BOOST
-
 
 Config config = Config();       // global to share between plugins
 
@@ -113,21 +109,12 @@ int main(int argc, char **argv) {
     int counter = 0;
     for (;;) {
         sleep(1);
-        #ifdef WITH_BOOST
-        std::cout << std::endl;
-        boost::timer::auto_cpu_timer t;
-        #endif // WITH_BOOST
 
         statusLine = "default ";
         for (unsigned int i = 0; i < plugins.size(); i++) {
             statusLine += RIGHT_SEP;
 
             if (counter % plugins[i]->getTimeout() == plugins[i]->getTimeoutOffset()) {
-                #ifdef WITH_BOOST
-                std::cout << "Updating " << plugins[i]->getName() << "\t";
-                boost::timer::auto_cpu_timer t;
-                #endif // WITH_BOOST
-
                 try {
                     plugins[i]->update();
                 } catch (const char *msg) {
@@ -146,9 +133,5 @@ int main(int argc, char **argv) {
         }
         xstatus.sendStatus(statusLine);
         counter++;
-
-        #ifdef WITH_BOOST
-        std::cout << "Total:\t\t\t";
-        #endif // WITH_BOOST
     }
 }
