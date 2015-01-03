@@ -2,8 +2,6 @@
 
 PluginEssid::PluginEssid(void) {
     name = "PluginEssid";
-    timeout = 10;
-    timeoutOffset = 1;
     wirelessName = config.network_wireless_interface.c_str();
 
     sockfd = socket(AF_INET, SOCK_DGRAM, 0);

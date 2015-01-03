@@ -29,9 +29,8 @@ void PluginVolume::update(void) {
 
 void PluginVolume::connect(void) {
     client = new PulseClient("wmfs-statusbar");
-    client->Populate();
-    defaults = client->GetDefaults();
-    device = client->GetDevice(defaults.sink.c_str(), DEVTYPE_SINK);
+    client->populate_sinks();
+    device = client->GetSink(1);
 }
 
 void PluginVolume::disconnect(void) {

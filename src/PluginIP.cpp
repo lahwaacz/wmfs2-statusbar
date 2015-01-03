@@ -2,8 +2,6 @@
 
 PluginIP::PluginIP(void) {
     name = "PluginIP";
-    timeout = 10;
-    timeoutOffset = 2;
 
     sockfd = socket(AF_INET, SOCK_DGRAM, 0);
     if (sockfd == -1)
