@@ -1,0 +1,3 @@
+[submodule "src/pamixer"]
+	path = src/pamixer
+	url = git@github.com:cdemoulins/pamixer.git

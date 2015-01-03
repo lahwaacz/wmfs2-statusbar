@@ -30,7 +30,8 @@ set(wmfs-statusbar_SOURCES
     src/PluginIP.cpp
     src/PluginBattery.cpp
     src/PluginVolume.cpp
-    src/pulse.cpp
+    src/pamixer/pulseaudio.cc
+    src/pamixer/device.cc
 )
 add_executable(wmfs-statusbar ${wmfs-statusbar_SOURCES})
 
@@ -44,17 +45,8 @@ target_link_libraries(wmfs-statusbar ${X11_LIBRARIES})
 target_link_libraries(wmfs-statusbar ${MPD_LIBRARIES})
 target_link_libraries(wmfs-statusbar ${PULSE_LIBRARIES})
 
-set(CMAKE_CXX_FLAGS "-std=c++11 -lstdc++ -Wall")
-set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -D DEBUG")
-
-if(CMAKE_BUILD_TYPE STREQUAL "Debug")
-    find_package(Boost 1.40 COMPONENTS timer system)
-    if(Boost_FOUND)
-        include_directories(${Boost_INCLUDE_DIR})
-        target_link_libraries(wmfs-statusbar ${Boost_LIBRARIES})
-        add_definitions("-D WITH_BOOST")
-    endif()
-endif()
+set(CMAKE_CXX_FLAGS "-std=c++11 -lstdc++ -Wall -Wextra -pedantic")
+set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -D DEBUG -g")
 
 # install path
 message(STATUS "Install prefix: " ${CMAKE_INSTALL_PREFIX})

@@ -16,27 +16,21 @@ void PluginVolume::update(void) {
     if (client == NULL)
         reconnect();
 
-    client->populate_sinks();
-    if (device->Muted()) {
+    Device device = client->get_default_sink();
+    if (device.mute) {
         asprintf(&statusLine, config.volume_format.c_str(), "M");
     } else {
-        char *perc;
-        asprintf(&perc, "%d%%", device->Volume());
-        asprintf(&statusLine, config.volume_format.c_str(), perc);
-        free(perc);
+        asprintf(&statusLine, config.volume_format.c_str(), device.volume_percent);
     }
 }
 
 void PluginVolume::connect(void) {
-    client = new PulseClient("wmfs-statusbar");
-    client->populate_sinks();
-    device = client->GetSink(1);
+    client = new Pulseaudio("wmfs-statusbar");
 }
 
 void PluginVolume::disconnect(void) {
     delete client;
     client = NULL;
-    device = NULL;
 }
 
 void PluginVolume::reconnect(void) {

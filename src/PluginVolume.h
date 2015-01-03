@@ -4,16 +4,12 @@
 
 #include "PluginBase.h"
 
-/* lib is part of ponymix
- * https://github.com/falconindy/ponymix
- */
-#include "pulse.h"
+#include "pamixer/pulseaudio.hh"
+#include "pamixer/device.hh"
 
 class PluginVolume : public Plugin {
     private:
-        PulseClient *client = NULL;
-        Device *device = NULL;
-        ServerInfo defaults = {};
+        Pulseaudio* client = NULL;
 
     public:
         PluginVolume(void);
