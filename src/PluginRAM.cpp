@@ -1,25 +1,53 @@
+#include <cstdio>   // fscanf
+
 #include "PluginRAM.h"
 
-PluginRAM::PluginRAM(void) {
-    name = "PluginRAM";
+using namespace std;
+
+PluginRAM::PluginRAM(std::string formatString)
+    : Plugin("ram", formatString)
+{
+    meminfo.open("/proc/meminfo");
+    // factor for KiB -> GiB conversion (1024 * 1024)
+    unitFactor = 1048576;
 }
 
 void PluginRAM::update(void) {
-    // first cleanup and init statusLine
-    free(statusLine);
-    statusLine = NULL;
+    long total = 0;
+    long used = 0;
 
-    long total, mfree, buf, cache;
-    FILE *f = fopen("/proc/meminfo", "r");
+    // reset stream to the beginning of file
+    meminfo.seekg(0, ios::beg);
   
-    if (!f)
+    if (meminfo.fail())
         throw "unable to read /proc/meminfo";
-  
-    fscanf(f, "MemTotal: %ld kB\n"
-              "MemFree:  %ld kB\n"
-              "Buffers:  %ld kB\n"
-              "Cached:   %ld kB\n", &total, &mfree, &buf, &cache);
-    fclose(f);
-    asprintf(&statusLine, config.ram_format.c_str(), (total - (mfree + buf + cache)), total);
+
+    string desc;
+    long value;
+    string unit;
+    int readCount = 0;
+
+    // parse meminfo file, relevant values are:
+    //   total = MemTotal
+    //    used = MemTotal - MemFree - Buffers - Cached
+    while (meminfo.good()) {
+        meminfo >> desc >> value >> unit;
+
+        if (desc == "MemTotal:") {
+            total = value;
+            used += value;
+            readCount++;
+        }
+        else if (desc == "MemFree:" || desc == "Buffers:" || desc == "Cached:") {
+            used -= value;
+            readCount++;
+        }
+
+        // skip the rest of the file when we have what we need
+        if (readCount == 4)
+            break;
+    }
+
+    statusLine = fmt::format(formatString, (float) used / unitFactor, (float) total / unitFactor);
 }
 

@@ -1,7 +1,15 @@
+#include <sys/ioctl.h>
+#include <sys/socket.h>
+#include <linux/wireless.h>
+#include <unistd.h>  // close
+
+#include <cstring>  // strncpy
+
 #include "PluginEssid.h"
 
-PluginEssid::PluginEssid(void) {
-    name = "PluginEssid";
+PluginEssid::PluginEssid(std::string formatString)
+    : Plugin("essid", formatString)
+{
     wirelessName = config.network_wireless_interface.c_str();
 
     sockfd = socket(AF_INET, SOCK_DGRAM, 0);
@@ -14,14 +22,10 @@ PluginEssid::~PluginEssid(void) {
 }
 
 void PluginEssid::update(void) {
-    // first cleanup and init statusLine
-    free(statusLine);
-    statusLine = NULL;
-
     if (failed)
         throw "unable to create socket";
 
-    wreq = {};
+    iwreq wreq = iwreq();
     strncpy(wreq.ifr_name, wirelessName, IFNAMSIZ-1);
 
     char buffer[IW_ESSID_MAX_SIZE] = {0};
@@ -30,7 +34,7 @@ void PluginEssid::update(void) {
 
     if (ioctl(sockfd, SIOCGIWESSID, &wreq) == -1) {
         throw "get ESSID ioctl failed";
-    } else {
-        asprintf(&statusLine, config.essid_format.c_str(), buffer);
     }
+
+    statusLine = fmt::format(formatString, buffer);
 }

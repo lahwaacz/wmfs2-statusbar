@@ -1,18 +1,16 @@
 #include "PluginDate.h"
 
-PluginDate::PluginDate(void) {
-    name = "PluginDate";
+PluginDate::PluginDate(std::string formatString)
+    : Plugin("date", formatString)
+{
 }
 
 void PluginDate::update(void) {
-    // first cleanup and init statusLine
-    free(statusLine);
-    statusLine = NULL;
-
     t = time(0);
     tm = localtime(&t);
+    // TODO: format should be configurable
     strftime(date, 128, "%a, %d %b %Y %T", tm);
   
-    asprintf(&statusLine, config.date_format.c_str(), date);
+    statusLine = fmt::format(formatString, date);
 }
 

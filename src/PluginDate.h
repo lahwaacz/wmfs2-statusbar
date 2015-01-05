@@ -1,8 +1,8 @@
 #pragma once
 
-#include "PluginBase.h"
-
 #include <ctime>
+
+#include "PluginBase.h"
 
 class PluginDate : public Plugin {
     private:
@@ -11,7 +11,7 @@ class PluginDate : public Plugin {
         char date[128] = {0};
 
     public:
-        PluginDate(void);
+        PluginDate(std::string formatString);
         void update(void);
 };
 

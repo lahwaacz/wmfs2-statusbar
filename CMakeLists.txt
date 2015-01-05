@@ -25,7 +25,6 @@ set(wmfs-statusbar_SOURCES
     src/PluginMPD.cpp
     src/PluginRAM.cpp
     src/PluginCPU.cpp
-    src/PluginNetwork.cpp
     src/PluginEssid.cpp
     src/PluginIP.cpp
     src/PluginBattery.cpp
@@ -45,7 +44,7 @@ target_link_libraries(wmfs-statusbar ${X11_LIBRARIES})
 target_link_libraries(wmfs-statusbar ${MPD_LIBRARIES})
 target_link_libraries(wmfs-statusbar ${PULSE_LIBRARIES})
 
-set(CMAKE_CXX_FLAGS "-std=c++11 -lstdc++ -Wall -Wextra -pedantic")
+set(CMAKE_CXX_FLAGS "-std=c++11 -lstdc++ -Wall -Wextra -pedantic  -lformat")
 set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -D DEBUG -g")
 
 # install path

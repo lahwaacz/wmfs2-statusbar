@@ -1,10 +1,15 @@
 #pragma once
 
+#include <fstream>
+
 #include "PluginBase.h"
 
 class PluginRAM : public Plugin {
+    private:
+        ifstream meminfo;
+        long unitFactor;
     public:
-        PluginRAM(void);
+        PluginRAM(std::string formatString);
         void update(void);
 };
 

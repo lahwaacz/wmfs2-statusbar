@@ -7,7 +7,7 @@ class PluginCPU : public Plugin {
         unsigned long idleOld;
         unsigned long totalOld;
     public:
-        PluginCPU(void);
+        PluginCPU(std::string formatString);
         void update(void);
 };
 

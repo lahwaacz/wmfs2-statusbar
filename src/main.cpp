@@ -15,7 +15,6 @@
 #include "PluginEssid.h"
 #include "PluginIP.h"
 #include "PluginMPD.h"
-#include "PluginNetwork.h"
 #include "PluginRAM.h"
 #include "PluginVolume.h"
 
@@ -29,7 +28,7 @@ static const char *optString = "hc:";
 
 
 static void usage(void) {
-    printf("usage: %s [-c <path-to-config-file>]\n", program_invocation_short_name);
+    std::cout << "usage: " << program_invocation_short_name << "[-c <path-to-config-file>]" << std::endl;
     exit(EXIT_SUCCESS);
 }
 
@@ -68,17 +67,35 @@ int main(int argc, char **argv) {
 
     Xstatus xstatus = Xstatus();
 
-    Plugin* bat = new PluginBattery();
-    Plugin* cpu = new PluginCPU();
-    Plugin* date = new PluginDate();
-    Plugin* essid = new PluginEssid();
-    Plugin* ip = new PluginIP();
-    Plugin* mpd = new PluginMPD();
-    Plugin* net = new PluginNetwork();
-    Plugin* ram = new PluginRAM();
-    Plugin* vol = new PluginVolume();
+    std::vector<std::string> pluginNames = {"mpd", "ram", "cpu", "essid", "ipaddr", "battery", "volume", "date"};
+    std::vector<Plugin*> plugins;
 
-    std::vector<Plugin*> plugins = {mpd, ram, cpu, net, essid, ip, bat, vol, date};
+    for (std::vector<std::string>::iterator it = pluginNames.begin();
+         it < pluginNames.end();
+         it++)
+    {
+        std::string name = *it;
+        Plugin* plugin = nullptr;
+
+        if (name == "battery")
+            plugin = new PluginBattery(config.battery_format);
+        else if (name == "cpu")
+            plugin = new PluginCPU(config.cpu_format);
+        else if (name == "date")
+            plugin = new PluginDate(config.date_format);
+        else if (name == "essid")
+            plugin = new PluginEssid(config.essid_format);
+        else if (name == "ipaddr")
+            plugin = new PluginIP(config.ip_format);
+        else if (name == "mpd")
+            plugin = new PluginMPD(config.mpd_format);
+        else if (name == "ram")
+            plugin = new PluginRAM(config.ram_format);
+        else if (name == "volume")
+            plugin = new PluginVolume(config.volume_format);
+
+        plugins.push_back(plugin);
+    }
 
     // at the start update every plugin
     for (unsigned int i = 0; i < plugins.size(); i++) {
@@ -87,6 +104,8 @@ int main(int argc, char **argv) {
         } catch (const char *msg) {
             std::cerr << "Failed to update plugin '" << plugins[i]->getName() << "': ";
             std::cerr << msg << std::endl;
+        } catch (fmt::FormatError & e) {
+            std::cerr << "Formatting for plugin '" << plugins[i]->getName() << "' failed" << std::endl;
         }
 
         // check if timeout and timeoutOffset are sane
@@ -107,31 +126,34 @@ int main(int argc, char **argv) {
 
     std::string statusLine;
     int counter = 0;
-    for (;;) {
+    while (counter < 60) {
         sleep(1);
 
-        statusLine = "default ";
+        statusLine = "";
         for (unsigned int i = 0; i < plugins.size(); i++) {
-            statusLine += RIGHT_SEP;
+            if (i > 0)
+                statusLine += RIGHT_SEP;
 
-            if (counter % plugins[i]->getTimeout() == plugins[i]->getTimeoutOffset()) {
+//            if (counter % plugins[i]->getTimeout() == plugins[i]->getTimeoutOffset()) {
                 try {
                     plugins[i]->update();
                 } catch (const char *msg) {
                     std::cerr << "Failed to update plugin '" << plugins[i]->getName() << "': ";
                     std::cerr << msg << std::endl;
+                } catch (fmt::FormatError & e) {
+                    std::cerr << "Formatting for plugin '" << plugins[i]->getName() << "' failed" << std::endl;
                 }
-            }
-            char *pluginStatus = plugins[i]->getStatusLine();
-            if (pluginStatus == NULL) {
+//            }
+            if (plugins[i]->isFailed()) {
                 statusLine += "^s[right;#ff0000;Plugin '";
                 statusLine += plugins[i]->getName();
                 statusLine += "' failed.]";
             } else {
-                statusLine += pluginStatus;
+                statusLine += plugins[i]->getStatusLine();
             }
         }
-        xstatus.sendStatus(statusLine);
+        std::cout << statusLine << std::endl;
+//        xstatus.sendStatus(statusLine);
         counter++;
     }
 }

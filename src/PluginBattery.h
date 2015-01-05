@@ -10,7 +10,7 @@ class PluginBattery : public Plugin {
         const char *pathNow;
         const char *pathState;
     public:
-        PluginBattery(void);
+        PluginBattery(std::string formatString);
         void update(void);
 };
 

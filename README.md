@@ -17,6 +17,7 @@ Build dependencies
  -  libmpdclient - MPD plugin
  -  libpulse - PulseAudio plugin
  -  [picojson](https://github.com/kazuho/picojson) - for parsing configuration files; included in project tree
+ -  [cppformat](https://github.com/cppformat/cppformat)
 
 Runtime dependencies
 --------------------

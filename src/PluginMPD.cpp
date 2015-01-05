@@ -1,7 +1,8 @@
 #include "PluginMPD.h"
 
-PluginMPD::PluginMPD(void) {
-    name = "PluginMPD";
+PluginMPD::PluginMPD(std::string formatString)
+    : Plugin("mpd", formatString)
+{
     connection = NULL;
     song = NULL;
     status = NULL;
@@ -12,14 +13,9 @@ PluginMPD::~PluginMPD(void) {
 }
 
 void PluginMPD::update(void) {
-    // first cleanup and init statusLine
-    free(statusLine);
-    statusLine = NULL;
-
     // init variables
     int elapsedTime = 0;
     int totalTime = 0;
-    int totalPulseBar = 100;    // workarround, setting 0/0 for pulse bar behaves badly
     char *songInfoText = NULL;
 
     if (!connect())
@@ -31,7 +27,6 @@ void PluginMPD::update(void) {
 
         elapsedTime = mpd_status_get_elapsed_time(status);
         totalTime = mpd_status_get_total_time(status);
-        totalPulseBar = totalTime;
         
         asprintf(&songInfoText, "%.20s - %.30s", 
                  mpd_song_get_tag(song, MPD_TAG_ARTIST, 0),
@@ -40,9 +35,9 @@ void PluginMPD::update(void) {
         mpd_song_free(song);
     }
 
-    asprintf(&statusLine, config.mpd_format.c_str(),
+    statusLine = fmt::format(formatString,
              elapsedTime / 60, elapsedTime % 60, totalTime / 60, totalTime % 60,
-             elapsedTime, totalPulseBar, (songInfoText ? songInfoText : ""));
+             (songInfoText ? songInfoText : ""));
 
     // cleanup
     mpd_status_free(status);

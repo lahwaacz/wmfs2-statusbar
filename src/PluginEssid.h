@@ -1,19 +1,14 @@
 #pragma once
 
-#include <sys/ioctl.h>
-#include <sys/socket.h>
-#include <linux/wireless.h>
-
 #include "PluginBase.h"
 
 class PluginEssid : public Plugin {
     private:
         int sockfd;
-        struct iwreq wreq = {};
         const char *wirelessName;
 
     public:
-        PluginEssid(void);
+        PluginEssid(std::string formatString);
         ~PluginEssid(void);
         void update(void);
 };

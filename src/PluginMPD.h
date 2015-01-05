@@ -14,7 +14,7 @@ class PluginMPD : public Plugin {
         struct mpd_song *song;
         struct mpd_status *status;
     public:
-        PluginMPD(void);
+        PluginMPD(std::string formatString);
         ~PluginMPD(void);
         void update(void);
         bool connect(void);

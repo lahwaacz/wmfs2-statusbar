@@ -12,7 +12,7 @@ class PluginVolume : public Plugin {
         Pulseaudio* client = NULL;
 
     public:
-        PluginVolume(void);
+        PluginVolume(std::string formatString);
         ~PluginVolume(void);
         void update(void);
         void connect(void);

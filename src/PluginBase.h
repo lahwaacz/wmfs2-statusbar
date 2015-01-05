@@ -1,56 +1,43 @@
 #pragma once
 
-#include <cstring>  /* for strcmp() */
-#include <cstdio>   /* for *printf() */
-#include <cstdlib>  /* for free() */
-#include <unistd.h> /* for close() */
+#include <string>
+#include <fstream>
 
+#include <format.h>  // cppformat
+
+// TODO
 #include "ConfigParser.h"
-
-
-// declared in main.cpp
 extern Config config;
 
-inline void readFileUnsignedLong(unsigned long *var, const char *path) {
-    FILE *f = fopen(path, "r");
-    if (!f)
-        throw 1;
-    fscanf(f, "%lu", var);
-    fclose(f);
-}
 
-inline void readFileInt(int *var, const char *path) {
-    FILE *f = fopen(path, "r");
-    if (!f)
-        throw 1;
-    fscanf(f, "%i", var);
-    fclose(f);
-}
-
-inline void readFileStr(char *buffer, int size, const char *path) {
-    FILE *f = fopen(path, "r");
-    if (!f)
-        throw 1;
-    fgets(buffer, size, f);
-    fclose(f);
+template<typename ValueType>
+inline void castValueFromFile(const char* path, ValueType & value)
+{
+    std::ifstream fs(path);
+    fs >> value;
 }
 
 
 class Plugin {
     protected:
-        const char *name = "<no-name-plugin>";
+        std::string name;
         bool failed = false;
         unsigned int timeout = 1;
         unsigned int timeoutOffset = 0;
-        char *statusLine = NULL;
+        std::string formatString;
+        std::string statusLine;
 
     public:
-        const char *getName(void) {return name;};
-        unsigned int getTimeout(void) {return timeout;};
-        void setTimeout(unsigned int timeout) {this->timeout = timeout;};
-        unsigned int getTimeoutOffset(void) {return timeoutOffset;};
-        void setTimeoutOffset(unsigned int offset) {this->timeoutOffset = offset;};
-        char* getStatusLine(void) {return statusLine;};
+        Plugin(std::string name, std::string formatString)
+            : name(name), formatString(formatString) {};
+
+        std::string getName(void) { return name; };
+        bool isFailed(void) { return failed; };
+        unsigned int getTimeout(void) { return timeout; };
+        void setTimeout(unsigned int timeout) { this->timeout = timeout; };
+        unsigned int getTimeoutOffset(void) { return timeoutOffset; };
+        void setTimeoutOffset(unsigned int offset) { this->timeoutOffset = offset; };
+        std::string getStatusLine(void) { return statusLine; };
 
         // main method - redefine in subclasses
         virtual void update(void) {};

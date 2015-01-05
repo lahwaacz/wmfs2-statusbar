@@ -1,16 +1,15 @@
+#include <cstdio>   // fscanf
+
 #include "PluginCPU.h"
 
-PluginCPU::PluginCPU(void) {
-    name = "PluginCPU";
+PluginCPU::PluginCPU(std::string formatString)
+    : Plugin("cpu", formatString)
+{
     idleOld = 0;
     totalOld = 0;
 }
 
 void PluginCPU::update(void) {
-    // first cleanup and init statusLine
-    free(statusLine);
-    statusLine = NULL;
-
     unsigned long active[3];
     unsigned long idle;
     unsigned long total;
@@ -30,6 +29,6 @@ void PluginCPU::update(void) {
     totalOld = total;
     idleOld = idle;
   
-    asprintf(&statusLine, config.cpu_format.c_str(), (int)percent);
+    statusLine = fmt::format(formatString, percent);
 }
 

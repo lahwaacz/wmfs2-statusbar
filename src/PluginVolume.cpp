@@ -1,7 +1,8 @@
 #include "PluginVolume.h"
 
-PluginVolume::PluginVolume(void) {
-    name = "PluginVolume";
+PluginVolume::PluginVolume(std::string formatString)
+    : Plugin("volume", formatString)
+{
 }
 
 PluginVolume::~PluginVolume(void) {
@@ -9,18 +10,14 @@ PluginVolume::~PluginVolume(void) {
 }
 
 void PluginVolume::update(void) {
-    // first cleanup and init statusLine
-    free(statusLine);
-    statusLine = NULL;
-
     if (client == NULL)
         reconnect();
 
     Device device = client->get_default_sink();
     if (device.mute) {
-        asprintf(&statusLine, config.volume_format.c_str(), "M");
+        statusLine = fmt::format(formatString, "M");
     } else {
-        asprintf(&statusLine, config.volume_format.c_str(), device.volume_percent);
+        statusLine = fmt::format(formatString, device.volume_percent);
     }
 }
 

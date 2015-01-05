@@ -1,7 +1,14 @@
+#include <unistd.h>  // sleep
+
+#include <fstream>
+
 #include "PluginBattery.h"
 
-PluginBattery::PluginBattery(void) {
-    name = "PluginBattery";
+using namespace std;
+
+PluginBattery::PluginBattery(std::string formatString)
+    : Plugin("battery", formatString)
+{
     timeout = 30;
     timeoutOffset = 3;
 
@@ -11,18 +18,16 @@ PluginBattery::PluginBattery(void) {
 }
 
 void PluginBattery::update(void) {
-    // first cleanup and init statusLine
-    free(statusLine);
-    statusLine = NULL;
+    castValueFromFile(pathFull, full);
+    castValueFromFile(pathNow, now);
 
-    readFileUnsignedLong(&full, pathFull);
-    readFileUnsignedLong(&now, pathNow);
-    char state[16];
-    readFileStr(state, 16, pathState);
+    string state;
+    ifstream fs(pathState);
+    fs >> state;
   
     int percent = full == 0 ? -1 : 100 * now / full;
 
-    if (std::strncmp(state, "Discharging", 2) == 0 and percent >= 0 and percent <= config.battery_critical_percent) {
+    if (state == "Discharging" and percent >= 0 and percent <= config.battery_critical_percent) {
         if (! config.battery_critical_action1.empty()) {
             std::system(config.battery_critical_action1.c_str());
             if (! config.battery_critical_action2.empty()) {
@@ -32,5 +37,5 @@ void PluginBattery::update(void) {
         }
     }
 
-    asprintf(&statusLine, config.battery_format.c_str(), state, percent);
+    statusLine = fmt::format(formatString, state, percent);
 }
