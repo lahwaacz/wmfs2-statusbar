@@ -1,4 +1,4 @@
-#include <cstdio>   // fscanf
+#include <limits>
 
 #include "PluginRAM.h"
 
@@ -18,20 +18,22 @@ void PluginRAM::update(void) {
 
     // reset stream to the beginning of file
     meminfo.seekg(0, ios::beg);
-  
+
     if (meminfo.fail())
         throw "unable to read /proc/meminfo";
 
     string desc;
     long value;
-    string unit;
     int readCount = 0;
 
     // parse meminfo file, relevant values are:
     //   total = MemTotal
     //    used = MemTotal - MemFree - Buffers - Cached
     while (meminfo.good()) {
-        meminfo >> desc >> value >> unit;
+        // extract description (first column) and value (second column)
+        meminfo >> desc >> value;
+        // ignore the rest of this line
+        meminfo.ignore(numeric_limits<streamsize>::max(), '\n');
 
         if (desc == "MemTotal:") {
             total = value;

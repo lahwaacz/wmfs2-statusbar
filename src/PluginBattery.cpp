@@ -1,7 +1,5 @@
 #include <unistd.h>  // sleep
 
-#include <fstream>
-
 #include "PluginBattery.h"
 
 using namespace std;
@@ -9,21 +7,32 @@ using namespace std;
 PluginBattery::PluginBattery(std::string formatString)
     : Plugin("battery", formatString)
 {
+    // TODO: config? (set defaults from main.cpp)
     timeout = 30;
     timeoutOffset = 3;
 
-    pathFull = config.battery_path_full.c_str();
-    pathNow = config.battery_path_now.c_str();
-    pathState = config.battery_path_state.c_str();
+    fsState.open(config.battery_path_state.c_str());
+    fsFull.open(config.battery_path_full.c_str());
+    fsNow.open(config.battery_path_now.c_str());
 }
 
 void PluginBattery::update(void) {
-    castValueFromFile(pathFull, full);
-    castValueFromFile(pathNow, now);
-
     string state;
-    ifstream fs(pathState);
-    fs >> state;
+    int full = 0;
+    int now = 0;
+
+    if (fsState.fail() || fsFull.fail() || fsNow.fail())
+        throw "unable to read ACPI battery events";
+
+    // rewind to the beginning of the file
+    fsState.seekg(0, ios::beg);
+    fsFull.seekg(0, ios::beg);
+    fsNow.seekg(0, ios::beg);
+
+    // read values
+    fsState >> state;
+    fsFull >> full;
+    fsNow >> now;
   
     int percent = full == 0 ? -1 : 100 * now / full;
 
