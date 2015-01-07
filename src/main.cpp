@@ -121,10 +121,7 @@ int main(int argc, char **argv) {
             std::cout << plugins[i]->getName() << ": timeout is too low, setting to 1sec" << std::endl;
             plugins[i]->setTimeout(1);
         }
-        if (offset < 0) {
-            std::cout << plugins[i]->getName() << ": timeoutOffset is too low, setting to 0sec" << std::endl;
-            plugins[i]->setTimeoutOffset(0);
-        } else if (offset >= timeout) {
+        if (offset >= timeout) {
             std::cout << plugins[i]->getName() << ": timeoutOffset is too high, setting to (timeout-1)sec" << std::endl;
             plugins[i]->setTimeoutOffset(timeout-1);
         }
