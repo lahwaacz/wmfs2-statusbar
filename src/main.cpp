@@ -1,5 +1,7 @@
-#include <unistd.h> /* for sleep(), getopt() */
-#include <cstdlib>  /* for exit() */
+#include <cstdlib>      // exit
+#include <unistd.h>     // getopt
+#include <sys/time.h>   // gettimeofday
+#include <time.h>       // nanosleep
 
 #include <iostream>
 #include <string>
@@ -128,11 +130,14 @@ int main(int argc, char **argv) {
         }
     }
 
+    // TODO: config
+    int interval = 1;
+
     std::string statusLine;
     int counter = 0;
-    while (counter < 60) {
-        sleep(1);
-
+    struct timeval epoch;
+    struct timespec timeoutSpec;
+    while (counter < 1000) {
         statusLine = "";
         for (unsigned int i = 0; i < plugins.size(); i++) {
             if (i > 0)
@@ -154,5 +159,14 @@ int main(int argc, char **argv) {
         std::cout.flush();
 //        xstatus.sendStatus(statusLine);
         counter++;
+
+        // Provide updates on every full second (epoch time divisible by interval, e.g.
+        // with interval == 60 we update at :00), which is as good as possible.
+        // To do this we sleep until the next second (with microsecond precision) plus
+        // (interval - 1 - modulo_alignment) seconds.
+        gettimeofday(&epoch, NULL);
+        timeoutSpec.tv_sec = interval - 1 - (epoch.tv_sec % interval);
+        timeoutSpec.tv_nsec = (1e6 - epoch.tv_usec) * 1000;
+        nanosleep(&timeoutSpec, NULL);
     }
 }
