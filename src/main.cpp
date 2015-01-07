@@ -52,6 +52,17 @@ bool parseArgs(int argc, char **argv) {
     return true;
 }
 
+void updatePlugin(Plugin & plugin) {
+    try {
+        plugin.update();
+    } catch (const char *msg) {
+        std::cerr << "Failed to update plugin '" << plugin.getName() << "': ";
+        std::cerr << msg << std::endl;
+    } catch (fmt::FormatError & e) {
+        std::cerr << "Formatting for plugin '" << plugin.getName() << "' failed: " << e.what() << std::endl;
+    }
+}
+
 int main(int argc, char **argv) {
     // parse command line arguments
     if (!parseArgs(argc, argv))
@@ -97,17 +108,10 @@ int main(int argc, char **argv) {
         plugins.push_back(plugin);
     }
 
-    // at the start update every plugin
     for (unsigned int i = 0; i < plugins.size(); i++) {
-        try {
-            plugins[i]->update();
-        } catch (const char *msg) {
-            std::cerr << "Failed to update plugin '" << plugins[i]->getName() << "': ";
-            std::cerr << msg << std::endl;
-        } catch (fmt::FormatError & e) {
-            std::cerr << "Formatting for plugin '" << plugins[i]->getName() << "' failed" << std::endl;
-        }
-
+        // make sure all plugins are updated at the start (they are not updated
+        // in the first mainloop iteration iff offset > 0)
+        updatePlugin(*plugins[i]);
         // check if timeout and timeoutOffset are sane
         int timeout = plugins[i]->getTimeout();
         int offset = plugins[i]->getTimeoutOffset();
@@ -134,17 +138,11 @@ int main(int argc, char **argv) {
             if (i > 0)
                 statusLine += RIGHT_SEP;
 
-//            if (counter % plugins[i]->getTimeout() == plugins[i]->getTimeoutOffset()) {
-                try {
-                    plugins[i]->update();
-                } catch (const char *msg) {
-                    std::cerr << "Failed to update plugin '" << plugins[i]->getName() << "': ";
-                    std::cerr << msg << std::endl;
-                } catch (fmt::FormatError & e) {
-                    std::cerr << "Formatting for plugin '" << plugins[i]->getName() << "' failed: " << e.what() << std::endl;
-                }
-//            }
+            if (counter % plugins[i]->getTimeout() == plugins[i]->getTimeoutOffset()) {
+                updatePlugin(*plugins[i]);
+            }
             if (plugins[i]->isFailed()) {
+                // TODO: config
                 statusLine += "^s[right;#ff0000;Plugin '";
                 statusLine += plugins[i]->getName();
                 statusLine += "' failed.]";
@@ -153,6 +151,7 @@ int main(int argc, char **argv) {
             }
         }
         std::cout << statusLine << std::endl;
+        std::cout.flush();
 //        xstatus.sendStatus(statusLine);
         counter++;
     }
