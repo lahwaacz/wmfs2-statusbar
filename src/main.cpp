@@ -141,7 +141,7 @@ int main(int argc, char **argv) {
                     std::cerr << "Failed to update plugin '" << plugins[i]->getName() << "': ";
                     std::cerr << msg << std::endl;
                 } catch (fmt::FormatError & e) {
-                    std::cerr << "Formatting for plugin '" << plugins[i]->getName() << "' failed" << std::endl;
+                    std::cerr << "Formatting for plugin '" << plugins[i]->getName() << "' failed: " << e.what() << std::endl;
                 }
 //            }
             if (plugins[i]->isFailed()) {
