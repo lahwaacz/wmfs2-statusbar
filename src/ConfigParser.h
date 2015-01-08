@@ -4,7 +4,7 @@
 #include <fstream>
 #include <string>
 
-#include "picojson.h"
+#include "picojson/picojson.h"
 
 using namespace std;
 

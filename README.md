@@ -16,7 +16,8 @@ Build dependencies
  -  xproto - Xatom.h
  -  libmpdclient - MPD plugin
  -  libpulse - PulseAudio plugin
- -  [picojson](https://github.com/kazuho/picojson) - for parsing configuration files; included in project tree
+ -  [pamixer](https://github.com/cdemoulins/pamixer) - high-level library for PulseAudio (included as git submodule)
+ -  [picojson](https://github.com/kazuho/picojson) - for parsing configuration files (included as git submodule)
  -  [cppformat](https://github.com/cppformat/cppformat)
 
 Runtime dependencies
