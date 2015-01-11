@@ -11,8 +11,8 @@ using namespace std;
 // TODO: move this into Config class
 //#define LEFT_SEP "^s[left;#888888; - ]"
 //#define RIGHT_SEP "^s[right;#888888; - ]"
-#define LEFT_SEP " "
-#define RIGHT_SEP " "
+#define LEFT_SEP " | "
+#define RIGHT_SEP " | "
 
 
 class Config {

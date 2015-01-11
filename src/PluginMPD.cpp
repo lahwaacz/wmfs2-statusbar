@@ -13,10 +13,8 @@ PluginMPD::~PluginMPD(void) {
 }
 
 void PluginMPD::update(void) {
-    // init variables
     int elapsedTime = 0;
     int totalTime = 0;
-    char *songInfoText = NULL;
 
     if (!connect())
         throw "unable to connect to MPD daemon";
@@ -28,20 +26,21 @@ void PluginMPD::update(void) {
         elapsedTime = mpd_status_get_elapsed_time(status);
         totalTime = mpd_status_get_total_time(status);
         
-        asprintf(&songInfoText, "%.20s - %.30s", 
+        statusLine = fmt::format(formatString,
+                 elapsedTime / 60, elapsedTime % 60, totalTime / 60, totalTime % 60,
                  mpd_song_get_tag(song, MPD_TAG_ARTIST, 0),
                  mpd_song_get_tag(song, MPD_TAG_TITLE, 0));
 
         mpd_song_free(song);
     }
-
-    statusLine = fmt::format(formatString,
-             elapsedTime / 60, elapsedTime % 60, totalTime / 60, totalTime % 60,
-             (songInfoText ? songInfoText : ""));
+    else {
+        statusLine = fmt::format(formatString,
+                 elapsedTime / 60, elapsedTime % 60, totalTime / 60, totalTime % 60,
+                 "", "");
+    }
 
     // cleanup
     mpd_status_free(status);
-    free(songInfoText);
 
     // until I find way to detect MPD restart...
     disconnect();

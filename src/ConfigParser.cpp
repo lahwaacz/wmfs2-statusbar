@@ -42,7 +42,7 @@ Config::Config(void) {
     date_format                 = "{0}";
     essid_format                = "ESSID {0}";
     ip_format                   = "IP {0}";
-    mpd_format                  = "MPD {0}:{1:02d} / {2}:{3:02d} {4}";
+    mpd_format                  = "MPD {0}:{1:02d} / {2}:{3:02d} {4:.20s} - {5:.30s}";
 
 // DEPRECATED
 //    network_format_wireless     = "Down %d - Up %d";
