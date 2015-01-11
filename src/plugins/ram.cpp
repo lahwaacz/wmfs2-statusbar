@@ -1,6 +1,6 @@
 #include <limits>
 
-#include "PluginRAM.h"
+#include "ram.h"
 
 using namespace std;
 

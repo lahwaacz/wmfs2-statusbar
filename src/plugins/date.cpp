@@ -1,4 +1,4 @@
-#include "PluginDate.h"
+#include "date.h"
 
 PluginDate::PluginDate(std::string formatString)
     : Plugin("date", formatString)

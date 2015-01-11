@@ -2,7 +2,7 @@
 
 #include <fstream>
 
-#include "PluginBase.h"
+#include "plugin.h"
 
 class PluginRAM : public Plugin {
     private:

@@ -1,4 +1,4 @@
-#include "PluginCPU.h"
+#include "cpu.h"
 
 PluginCPU::PluginCPU(std::string formatString)
     : Plugin("cpu", formatString)

@@ -8,17 +8,17 @@
 #include <vector>
 
 #include "Xstatus.h"
-#include "ConfigParser.h"
+#include "config.h"
 
 // plugins
-#include "PluginBattery.h"
-#include "PluginCPU.h"
-#include "PluginDate.h"
-#include "PluginEssid.h"
-#include "PluginIP.h"
-#include "PluginMPD.h"
-#include "PluginRAM.h"
-#include "PluginVolume.h"
+#include "plugins/battery.h"
+#include "plugins/cpu.h"
+#include "plugins/date.h"
+#include "plugins/essid.h"
+#include "plugins/ipaddr.h"
+#include "plugins/mpd.h"
+#include "plugins/ram.h"
+#include "plugins/volume.h"
 
 
 Config config = Config();       // global to share between plugins

@@ -1,6 +1,6 @@
 #pragma once
 
-#include "PluginBase.h"
+#include "plugin.h"
 
 class PluginIP : public Plugin {
     private:

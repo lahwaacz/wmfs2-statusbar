@@ -1,4 +1,4 @@
-#include "ConfigParser.h"
+#include "config.h"
 
 // init - set defaults
 //Config::Config(void) {

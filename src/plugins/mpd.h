@@ -2,12 +2,15 @@
 
 #include <mpd/client.h>
 
-#include "PluginBase.h"
+#include "plugin.h"
 
 class PluginMPD : public Plugin {
     private:
+        // TODO: password authentication
+        // TODO: these should be configurable
         int connect_port = 0;
         int connect_timeout = 10000;
+        // TODO: NULL is allowed here, which will respect MPD_HOST environment variable
         const char *connect_hostname = "localhost";
 
         struct mpd_connection *connection;

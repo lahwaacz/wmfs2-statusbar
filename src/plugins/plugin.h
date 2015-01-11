@@ -5,7 +5,7 @@
 #include <format.h>  // cppformat
 
 // TODO
-#include "ConfigParser.h"
+#include "../config.h"
 extern Config config;
 
 class Plugin {

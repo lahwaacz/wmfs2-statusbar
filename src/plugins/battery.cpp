@@ -1,6 +1,6 @@
 #include <unistd.h>  // sleep
 
-#include "PluginBattery.h"
+#include "battery.h"
 
 using namespace std;
 

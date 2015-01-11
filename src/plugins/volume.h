@@ -1,11 +1,9 @@
 #pragma once
 
-#include <cstdio>
+#include <pamixer/pulseaudio.hh>
+#include <pamixer/device.hh>
 
-#include "PluginBase.h"
-
-#include "pamixer/pulseaudio.hh"
-#include "pamixer/device.hh"
+#include "plugin.h"
 
 class PluginVolume : public Plugin {
     private:

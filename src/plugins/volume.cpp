@@ -1,4 +1,4 @@
-#include "PluginVolume.h"
+#include "volume.h"
 
 PluginVolume::PluginVolume(std::string formatString)
     : Plugin("volume", formatString)

@@ -2,7 +2,7 @@
 
 #include <ctime>
 
-#include "PluginBase.h"
+#include "plugin.h"
 
 class PluginDate : public Plugin {
     private:

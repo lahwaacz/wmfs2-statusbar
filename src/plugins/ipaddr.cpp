@@ -6,7 +6,7 @@
 
 #include <cstring>  // strncpy
 
-#include "PluginIP.h"
+#include "ipaddr.h"
 
 PluginIP::PluginIP(std::string formatString)
     : Plugin("ipaddr", formatString)

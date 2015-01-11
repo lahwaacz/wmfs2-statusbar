@@ -19,18 +19,18 @@ project(wmfs-statusbar)
 # set sources for wmfs-statusbar executable
 set(wmfs-statusbar_SOURCES
     src/main.cpp
-    src/ConfigParser.cpp
+    src/config.cpp
     src/Xstatus.cpp
-    src/PluginDate.cpp
-    src/PluginMPD.cpp
-    src/PluginRAM.cpp
-    src/PluginCPU.cpp
-    src/PluginEssid.cpp
-    src/PluginIP.cpp
-    src/PluginBattery.cpp
-    src/PluginVolume.cpp
-    src/pamixer/pulseaudio.cc
-    src/pamixer/device.cc
+    src/plugins/date.cpp
+    src/plugins/mpd.cpp
+    src/plugins/ram.cpp
+    src/plugins/cpu.cpp
+    src/plugins/essid.cpp
+    src/plugins/ipaddr.cpp
+    src/plugins/battery.cpp
+    src/plugins/volume.cpp
+    lib/pamixer/pulseaudio.cc
+    lib/pamixer/device.cc
 )
 add_executable(wmfs-statusbar ${wmfs-statusbar_SOURCES})
 
@@ -44,7 +44,7 @@ target_link_libraries(wmfs-statusbar ${X11_LIBRARIES})
 target_link_libraries(wmfs-statusbar ${MPD_LIBRARIES})
 target_link_libraries(wmfs-statusbar ${PULSE_LIBRARIES})
 
-set(CMAKE_CXX_FLAGS "-std=c++11 -lstdc++ -Wall -Wextra -pedantic  -lformat")
+set(CMAKE_CXX_FLAGS "-std=c++11 -lstdc++ -Wall -Wextra -pedantic  -I./lib  -lformat")
 set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -D DEBUG -g")
 
 # install path

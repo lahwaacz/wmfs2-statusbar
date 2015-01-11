@@ -1,6 +1,6 @@
 [submodule "src/pamixer"]
-	path = src/pamixer
+	path = lib/pamixer
 	url = git@github.com:cdemoulins/pamixer.git
 [submodule "src/picojson"]
-	path = src/picojson
+	path = lib/picojson
 	url = git@github.com:kazuho/picojson.git

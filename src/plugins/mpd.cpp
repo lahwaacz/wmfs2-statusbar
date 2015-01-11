@@ -1,4 +1,4 @@
-#include "PluginMPD.h"
+#include "mpd.h"
 
 PluginMPD::PluginMPD(std::string formatString)
     : Plugin("mpd", formatString)
@@ -47,13 +47,15 @@ void PluginMPD::update(void) {
 }
 
 bool PluginMPD::connect(void) {
-    connection = mpd_connection_new(connect_hostname, connect_port, connect_timeout);
+    // check if there is a connection
+    if (!connection)
+        connection = mpd_connection_new(connect_hostname, connect_port, connect_timeout);
+    // check success
     if (mpd_connection_get_error(connection) == MPD_ERROR_SUCCESS)
         return true;
-    else {
-        connection = NULL;
-        return false;
-    }
+    // cleanup
+    disconnect();
+    return false;
 }
 
 void PluginMPD::disconnect(void) {

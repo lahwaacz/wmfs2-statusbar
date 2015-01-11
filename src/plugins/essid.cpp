@@ -5,7 +5,7 @@
 
 #include <cstring>  // strncpy
 
-#include "PluginEssid.h"
+#include "essid.h"
 
 PluginEssid::PluginEssid(std::string formatString)
     : Plugin("essid", formatString)
