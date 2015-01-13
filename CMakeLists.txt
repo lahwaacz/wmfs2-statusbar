@@ -20,7 +20,6 @@ project(wmfs-statusbar)
 set(wmfs-statusbar_SOURCES
     src/main.cpp
     src/config.cpp
-    src/Xstatus.cpp
     src/plugins/date.cpp
     src/plugins/mpd.cpp
     src/plugins/ram.cpp
@@ -37,10 +36,8 @@ add_executable(wmfs-statusbar ${wmfs-statusbar_SOURCES})
 # find dynamic dependencies
 find_package(PkgConfig)
 
-pkg_check_modules(X11 REQUIRED x11)
 pkg_check_modules(MPD REQUIRED libmpdclient)
 pkg_check_modules(PULSE REQUIRED libpulse)
-target_link_libraries(wmfs-statusbar ${X11_LIBRARIES})
 target_link_libraries(wmfs-statusbar ${MPD_LIBRARIES})
 target_link_libraries(wmfs-statusbar ${PULSE_LIBRARIES})
 

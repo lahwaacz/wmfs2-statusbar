@@ -7,7 +7,6 @@
 #include <string>
 #include <vector>
 
-#include "Xstatus.h"
 #include "config.h"
 
 // plugins
@@ -78,8 +77,6 @@ int main(int argc, char **argv) {
     config.print();     // dump config values
     #endif // DEBUG
 
-    Xstatus xstatus = Xstatus();
-
     std::vector<std::string> pluginNames = {"mpd", "ram", "cpu", "essid", "ipaddr", "battery", "volume", "date"};
     std::vector<Plugin*> plugins;
 
@@ -134,7 +131,7 @@ int main(int argc, char **argv) {
     int counter = 0;
     struct timeval epoch;
     struct timespec timeoutSpec;
-    while (counter < 1000) {
+    while (counter++ < 1000) {
         statusLine = "";
         for (unsigned int i = 0; i < plugins.size(); i++) {
             if (i > 0)
@@ -154,8 +151,6 @@ int main(int argc, char **argv) {
         }
         std::cout << statusLine << std::endl;
         std::cout.flush();
-//        xstatus.sendStatus(statusLine);
-        counter++;
 
         // Provide updates on every full second (epoch time divisible by interval, e.g.
         // with interval == 60 we update at :00), which is as good as possible.

@@ -12,8 +12,6 @@ Build dependencies
  -  gcc (obviously)
  -  cmake
  -  pkg-config
- -  libx11 - Xlib.h
- -  xproto - Xatom.h
  -  libmpdclient - MPD plugin
  -  libpulse - PulseAudio plugin
  -  [pamixer](https://github.com/cdemoulins/pamixer) - high-level library for PulseAudio (included as git submodule)
