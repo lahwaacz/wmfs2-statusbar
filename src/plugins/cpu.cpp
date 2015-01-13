@@ -17,7 +17,7 @@ void PluginCPU::update(void) {
     if (fsStat.fail())
         throw "unable to read /proc/stat";
 
-    fsStat.seekg(0, ios::beg);
+    fsStat.seekg(0, std::ios::beg);
   
     // ignore first column (assume <16 chars)
     fsStat.ignore(16, ' ');

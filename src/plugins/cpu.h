@@ -8,7 +8,7 @@ class PluginCPU : public Plugin {
     private:
         unsigned long idleOld;
         unsigned long totalOld;
-        ifstream fsStat;
+        std::ifstream fsStat;
     public:
         PluginCPU(std::string formatString);
         void update(void);

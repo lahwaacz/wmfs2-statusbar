@@ -4,7 +4,7 @@
 
 using namespace std;
 
-PluginBattery::PluginBattery(std::string formatString)
+PluginBattery::PluginBattery(string formatString)
     : Plugin("battery", formatString)
 {
     // TODO: config? (set defaults from main.cpp)

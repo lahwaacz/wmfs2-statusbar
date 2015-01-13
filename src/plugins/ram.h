@@ -6,7 +6,7 @@
 
 class PluginRAM : public Plugin {
     private:
-        ifstream meminfo;
+        std::ifstream meminfo;
         long unitFactor;
     public:
         PluginRAM(std::string formatString);

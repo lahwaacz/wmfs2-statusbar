@@ -1,5 +1,7 @@
 #include "config.h"
 
+using namespace std;
+
 // init - set defaults
 //Config::Config(void) {
 //    // defaults - every plugin must specify default values here!

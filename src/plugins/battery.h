@@ -6,9 +6,9 @@
 
 class PluginBattery : public Plugin {
     private:
-        ifstream fsFull;
-        ifstream fsNow;
-        ifstream fsState;
+        std::ifstream fsFull;
+        std::ifstream fsNow;
+        std::ifstream fsState;
     public:
         PluginBattery(std::string formatString);
         void update(void);
